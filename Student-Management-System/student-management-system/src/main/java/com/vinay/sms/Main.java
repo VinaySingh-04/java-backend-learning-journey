@@ -26,75 +26,19 @@ public class Main {
 
             switch(choice){
                 case 1:
-                    System.out.println("Enter Student ID");
-                    int id = scan.nextInt();
-
-                    scan.nextLine();
-
-                    System.out.println("Enter Student Name");
-                    String name = scan.nextLine();
-
-                    System.out.println("Enter Student Age");
-                    int age = scan.nextInt();
-
-                    scan.nextLine();
-
-                    System.out.println("Enter Student Course");
-                    String course = scan.nextLine();
-
-                    Student student = new Student(id,name,age,course);
-                    service.addStudent(student);
-
+                    addStudent(scan,service);
                     break;
                 case 2 :
-                    service.displayStudents();
+                    displayStudent(service);
                     break;
                 case 3:
-                    System.out.println("Enter Student ID");
-                    int studentId = scan.nextInt();
-
-                    Student foundStudent = service.searchStudentById(studentId);
-
-                    if(foundStudent != null){
-                        System.out.println("\n===== Student Found =====");
-                        System.out.println(foundStudent);
-                    }else{
-                        System.out.println("Student Not Found");
-                    }
+                    searchStudent(scan,service);
                     break;
                 case 4:
-                    System.out.println("Enter Student Id to Update");
-                    int UpdateId = scan.nextInt();
-                    scan.nextLine();
-
-                    System.out.println("Enter New Name");
-                    String UpdatesName = scan.nextLine();
-
-                    System.out.println("Enter New Age");
-                    int UpdatedAge = scan.nextInt();
-                    scan.nextLine();
-
-                    System.out.println("Enter New Course");
-                    String UpdatesCourse = scan.nextLine();
-
-                    boolean updated  = service.UpdateStudent(UpdateId,UpdatesName,UpdatedAge,UpdatesCourse);
-
-                    if(updated){
-                        System.out.println("Student Updated");
-                    }else {
-                        System.out.println("Student Not Updated");
-                    }
-
+                    updateStudent(scan,service);
                      break;
                 case 5:
-                    System.out.println("Enter Student Id For Deletion   ");
-                    int DeleteId = scan.nextInt();
-                    boolean Deleted = service.DeleteStudent(DeleteId);
-                    if(Deleted){
-                        System.out.println("Student Deleted");
-                    }else {
-                        System.out.println("Student Not Found");
-                    }
+                     deleteStudent(scan,service);
                     break;
                 case 6:
                     System.out.println("Thank You For Using Student Management System");
@@ -103,6 +47,78 @@ public class Main {
                 default:
                     System.out.println("Invalid Choice ! Please Try Again");
             }
+        }
+    }
+
+    private static void addStudent(Scanner scanner ,studentService service){
+        System.out.println("Enter Student Id");
+        int studentId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Student Name");
+        String studentName = scanner.nextLine();
+
+        System.out.println("Enter Student Age");
+        int studentAge = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Student Course");
+        String studentCourse = scanner.nextLine();
+
+        Student student = new Student(studentId,studentName,studentAge,studentCourse);
+        service.addStudent(student);
+    }
+
+    private static void displayStudent(studentService service){
+        service.displayStudents();
+    }
+
+    private static void searchStudent(Scanner scanner,studentService service){
+        System.out.println("Enter Student Id");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+         Student found =  service.searchStudentById(id);
+         if(found != null){
+             System.out.println("Student Found");
+             System.out.println(found);
+         }else{
+             System.out.println("Student Not Found");
+         }
+    }
+
+    private static void updateStudent(Scanner scanner,studentService service){
+        System.out.println("Enter Student Id");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Student Name");
+        String studentName = scanner.nextLine();
+
+        System.out.println("Enter Student Age");
+        int studentAge = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Enter Student Course");
+        String studentCourse = scanner.nextLine();
+
+        boolean updateStudent = service.UpdateStudent(id,studentName,studentAge,studentCourse);
+
+        if(updateStudent){
+            System.out.println("Student Updated");
+        }else{
+            System.out.println("Student Not Updated");
+        }
+    }
+
+    private static void deleteStudent(Scanner scanner,studentService service){
+        System.out.println("Enter Student Id For Deletion   ");
+        int DeleteId = scanner.nextInt();
+        boolean Deleted = service.DeleteStudent(DeleteId);
+        if(Deleted){
+            System.out.println("Student Deleted");
+        }else {
+            System.out.println("Student Not Found");
         }
     }
 }
