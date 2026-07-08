@@ -4,6 +4,7 @@ import com.vinay.sms.model.Student;
 
 import com.vinay.sms.service.studentService;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -51,19 +52,23 @@ public class Main {
     }
 
     private static void addStudent(Scanner scanner ,studentService service){
-        System.out.println("Enter Student Id");
-        int studentId = scanner.nextInt();
+        int studentId;
+        while(true){
+            studentId = readValidId(scanner);
+            if(!service.isStudentExist(studentId)){
+                break;
+            }
+            System.out.println("Student id already exist , Enter a different id");
+        }
         scanner.nextLine();
 
-        System.out.println("Enter Student Name");
-        String studentName = scanner.nextLine();
+        String studentName = readValidName(scanner);
 
-        System.out.println("Enter Student Age");
-        int studentAge = scanner.nextInt();
+        int studentAge = readValidAge(scanner);
         scanner.nextLine();
 
-        System.out.println("Enter Student Course");
-        String studentCourse = scanner.nextLine();
+
+        String studentCourse = readValidCourse(scanner);
 
         Student student = new Student(studentId,studentName,studentAge,studentCourse);
         service.addStudent(student);
@@ -88,27 +93,72 @@ public class Main {
     }
 
     private static void updateStudent(Scanner scanner,studentService service){
-        System.out.println("Enter Student Id");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        System.out.println("\n========== UPDATE STUDENT ==========");
 
-        System.out.println("Enter Student Name");
-        String studentName = scanner.nextLine();
+        int id = readValidId(scanner);
 
-        System.out.println("Enter Student Age");
-        int studentAge = scanner.nextInt();
-        scanner.nextLine();
+        Student foundStudent = service.searchStudentById(id);
 
-        System.out.println("Enter Student Course");
-        String studentCourse = scanner.nextLine();
-
-        boolean updateStudent = service.UpdateStudent(id,studentName,studentAge,studentCourse);
-
-        if(updateStudent){
-            System.out.println("Student Updated");
-        }else{
-            System.out.println("Student Not Updated");
+        if (foundStudent == null) {
+            System.out.println(" Student not found.");
+            return;
         }
+
+        System.out.println("\nStudent Found:");
+        System.out.println(foundStudent);
+
+        while(true){
+            System.out.println("\n===== UPDATE MENU =====");
+
+            System.out.println("1. Update Name");
+            System.out.println("2. Update Age");
+            System.out.println("3. Update Course");
+            System.out.println("4. Update All Details");
+            System.out.println("5. Cancel");
+
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(choice){
+                case 1:
+                    String newName = readValidName(scanner);
+                    foundStudent.setName(newName);
+                    System.out.println("name updated successfully");
+                    break;
+                case 2:
+                    int newAge = readValidAge(scanner);
+                    foundStudent.setAge(newAge);
+                    System.out.println("age updated successfully");
+                    break;
+                case 3:
+                    String newCourse = readValidCourse(scanner);
+                    foundStudent.setCourse(newCourse);
+                    System.out.println("course updated successfully");
+                    break;
+                case 4:
+                    String name = readValidName(scanner);
+                    int age = readValidAge(scanner);
+                    scanner.nextLine();
+                    String course = readValidCourse(scanner);
+
+                    foundStudent.setName(name);
+                    foundStudent.setAge(age);
+                    foundStudent.setCourse(course);
+
+                    System.out.println(" student details updated successfully.");
+                    break;
+                    case 5:
+                    System.out.println("Update cancelled.");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice.");
+
+            }
+        }
+
     }
 
     private static void deleteStudent(Scanner scanner,studentService service){
@@ -120,5 +170,73 @@ public class Main {
         }else {
             System.out.println("Student Not Found");
         }
+    }
+
+    private static int readValidId(Scanner scanner){
+        int id ;
+
+        while(true) {
+            try {
+                System.out.println("Enter Student Id");
+                id = scanner.nextInt();
+
+                if (id > 0) {
+                    return id;
+                }
+                System.out.println("Id must be greater than zero");
+            } catch(InputMismatchException e) {
+               printInvalidNumberMessage();
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static int readValidAge(Scanner scanner){
+        int age;
+        while(true){
+            try {
+                System.out.println("Enter Student Age");
+                age = scanner.nextInt();
+
+                if (age >= 1 && age <= 120) {
+                    return age;
+                }
+
+                System.out.println("Age must be between 1 and 120");
+            }
+            catch(InputMismatchException e) {
+               printInvalidNumberMessage();
+                scanner.nextLine();
+            }
+        }
+    }
+
+    private static String readValidName(Scanner scanner){
+        String name;
+        while(true){
+            System.out.println("Enter Student Name");
+            name = scanner.nextLine();
+
+            if (!name.isBlank()){
+                return name.trim();
+            }
+            System.out.println("Name can't be blank");
+        }
+    }
+
+    private static String readValidCourse(Scanner scanner){
+        String course;
+        while(true){
+            System.out.println("Enter Student Course");
+            course = scanner.nextLine();
+            if(!course.isBlank()){
+                return course.trim();
+            }
+            System.out.println("Course can't be blank");
+        }
+    }
+
+    private static void printInvalidNumberMessage(){
+    System.out.println("Invalid input. Please enter numbers only.");
     }
 }

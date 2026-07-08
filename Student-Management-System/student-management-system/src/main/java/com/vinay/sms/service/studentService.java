@@ -72,4 +72,8 @@ import java.util.ArrayList;
          }
      }
 
+     public boolean isStudentExist(int id){
+         return searchStudentById(id) != null;
+     }
+
 }
