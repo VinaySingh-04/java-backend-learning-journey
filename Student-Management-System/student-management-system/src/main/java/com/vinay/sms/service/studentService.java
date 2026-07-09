@@ -3,8 +3,9 @@ package com.vinay.sms.service;
 import com.vinay.sms.model.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
- public class studentService {
+public class studentService {
 
     private ArrayList<Student> students;
 
@@ -75,5 +76,58 @@ import java.util.ArrayList;
      public boolean isStudentExist(int id){
          return searchStudentById(id) != null;
      }
+
+     public List<Student> searchStudentByName(String name){
+        List<Student> matchedStudent = new ArrayList<>();
+        for (Student student :students){
+            if(student.getName().toLowerCase().contains(name.toLowerCase())){
+               matchedStudent.add(student);
+          }
+        }
+        return matchedStudent;
+
+      }
+
+        public int getTotalStudent(){
+        return students.size();
+      }
+
+        public  double getAverage(){
+        if(students.isEmpty()){
+            return 0;
+        }
+
+        int sum = 0;
+        for(Student student : students){
+            sum = sum + student.getAge();
+        }
+
+        return (double)sum/students.size();
+      }
+
+      public void showCourseStatistics(){
+        int javaCounter = 0;
+        int pythonCounter = 0;
+        int cppCounter = 0;
+
+        for(Student student : students){
+            String course = student.getCourse();
+            if ("Java".equalsIgnoreCase(course)) {
+                javaCounter++;
+            }
+            else if ("Python".equalsIgnoreCase(course)) {
+                pythonCounter++;
+            }
+            else if ("C++".equalsIgnoreCase(course)) {
+                cppCounter++;
+            }
+            System.out.println("\nCourse Distribution");
+            System.out.println("-------------------");
+
+            System.out.printf("%-10s : %d%n", "Java", javaCounter);
+            System.out.printf("%-10s : %d%n", "Python", pythonCounter);
+            System.out.printf("%-10s : %d%n", "C++", cppCounter);
+        }
+      }
 
 }

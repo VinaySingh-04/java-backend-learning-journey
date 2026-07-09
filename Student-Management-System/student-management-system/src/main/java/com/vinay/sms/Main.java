@@ -1,15 +1,20 @@
 package com.vinay.sms;
 
 import com.vinay.sms.model.Student;
-
 import com.vinay.sms.service.studentService;
+import com.vinay.sms.util.fileUtil;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        fileUtil.createFile();
+
+        fileUtil.writeSampleData();
 
         Scanner scan = new Scanner(System.in);
 
@@ -18,12 +23,15 @@ public class Main {
         while(true){
             System.out.println("1.Add Student");
             System.out.println("2.Display Student");
-            System.out.println("3.Search Student");
-            System.out.println("4.Update Student");
-            System.out.println("5.Delete Student");
-            System.out.println("6.Exit");
+            System.out.println("3.Search Student By Id");
+            System.out.println("4.Search Student By Name");
+            System.out.println("5.Update Student");
+            System.out.println("6.Delete Student");
+            System.out.println("7.Show All Students");
+            System.out.println("8.Exit");
             System.out.println("Enter Your Choice");
             int choice = scan.nextInt();
+            scan.nextLine();
 
             switch(choice){
                 case 1:
@@ -36,12 +44,18 @@ public class Main {
                     searchStudent(scan,service);
                     break;
                 case 4:
+                    searchStudentByName(scan,service);
+                    break;
+                case 5:
                     updateStudent(scan,service);
                      break;
-                case 5:
+                case 6:
                      deleteStudent(scan,service);
                     break;
-                case 6:
+                case 7:
+                    ShowDisplay(service);
+                    break;
+                case 8:
                     System.out.println("Thank You For Using Student Management System");
                     scan.close();
                     return;
@@ -238,5 +252,36 @@ public class Main {
 
     private static void printInvalidNumberMessage(){
     System.out.println("Invalid input. Please enter numbers only.");
+    }
+
+    private static void searchStudentByName(Scanner scanner, studentService service){
+//        scanner.nextLine();
+        System.out.println("Enter Student Name : ");
+        String name = scanner.nextLine();
+
+        List<Student> matchedStudent = service.searchStudentByName(name);
+        if(matchedStudent.isEmpty()){
+            System.out.println("Student Not Found");
+            return;
+        }
+        System.out.println("\n===== Matching Students =====");
+        for(Student student : matchedStudent){
+            System.out.println(student);
+        }
+    }
+
+    private static void ShowDisplay(studentService service){
+
+        System.out.println("\n========== DASHBOARD ==========");
+
+        int totalStudents = service.getTotalStudent();
+
+        double average = service.getAverage();
+
+        System.out.println("Total Students : " + totalStudents);
+
+        System.out.printf("Average : %.2f%n",average);
+
+        System.out.println("===============================");
     }
 }
