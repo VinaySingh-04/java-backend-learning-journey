@@ -65,7 +65,7 @@ This repository contains all the projects, notes, and practice completed while l
 
 | No | Project | Status |
 |----|---------|--------|
-| 01 | Student Management System |  Coming Soon |
+| 01 | Student Management System |  Completed |
 | 02 | Library Management System |  Coming Soon |
 | 03 | Bank Management System |  Coming Soon |
 | 04 | Employee Management System |  Coming Soon |
