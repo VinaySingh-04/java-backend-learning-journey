@@ -22,12 +22,15 @@ public class fileUtil {
         }
     }
 
-    public static void writeSampleData(List<Student> students) {
+    public static void saveStudents(List<Student> students) {
         try {
             FileWriter writer = new FileWriter("students.txt");
             for(Student student : students){
                 String data =
-                        student.getId() + "," + student.getName() + "," + student.getAge() + "," + student.getCourse();
+                        student.getId() + "," +
+                                student.getName() + "," +
+                                student.getAge() + "," +
+                                student.getCourse();
                  writer.write(data);
                  writer.write(System.lineSeparator());
             }
@@ -40,7 +43,7 @@ public class fileUtil {
 
     }
 
-    public static void loadFiles(List<Student> students){
+    public static void loadStudents(List<Student> students){
         try{
         BufferedReader reader = new BufferedReader(new FileReader("students.txt"));
         String line  ;
@@ -55,7 +58,7 @@ public class fileUtil {
             Student student =
                     new Student(id, name, age, course);
 
-            students.add(student);
+          students.add(student);
         }
         reader.close();
         }catch(IOException e){

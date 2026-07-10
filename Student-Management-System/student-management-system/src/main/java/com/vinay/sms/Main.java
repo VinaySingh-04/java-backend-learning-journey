@@ -11,10 +11,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-
         fileUtil.createFile();
-
-        fileUtil.writeSampleData();
 
         Scanner scan = new Scanner(System.in);
 
@@ -27,7 +24,7 @@ public class Main {
             System.out.println("4.Search Student By Name");
             System.out.println("5.Update Student");
             System.out.println("6.Delete Student");
-            System.out.println("7.Show All Students");
+            System.out.println("7.Dashboard");
             System.out.println("8.Exit");
             System.out.println("Enter Your Choice");
             int choice = scan.nextInt();

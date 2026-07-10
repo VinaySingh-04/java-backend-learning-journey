@@ -1,6 +1,7 @@
 package com.vinay.sms.service;
 
 import com.vinay.sms.model.Student;
+import com.vinay.sms.util.fileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +11,16 @@ public class studentService {
     private ArrayList<Student> students;
 
     public studentService() {
+
         students = new ArrayList<>();
+        fileUtil.loadStudents(students);
     }
 
     // Add Student
     public void addStudent(Student student) {
 
         students.add(student);
+        fileUtil.saveStudents(students);
 
         System.out.println("Student added successfully.");
     }
@@ -57,6 +61,7 @@ public class studentService {
             student.setName(name);
             student.setAge(age);
             student.setCourse(Course);
+            fileUtil.saveStudents(students);
             return true;
         }
         return false;
@@ -67,6 +72,7 @@ public class studentService {
         Student student = searchStudentById(id);
         if(student != null){
             students.remove(student);
+            fileUtil.saveStudents(students);
             return true;
          }else{
             return false;
@@ -129,5 +135,4 @@ public class studentService {
             System.out.printf("%-10s : %d%n", "C++", cppCounter);
         }
       }
-
 }

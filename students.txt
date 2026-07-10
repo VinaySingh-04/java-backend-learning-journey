@@ -1,1 +1,2 @@
-Hello student managemnt system
+1,vinay,24,java
+2,kunal,27,data analytics
