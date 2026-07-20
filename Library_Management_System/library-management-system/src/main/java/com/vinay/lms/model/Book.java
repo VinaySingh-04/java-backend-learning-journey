@@ -56,9 +56,10 @@ public class Book {
     }
 
     public void setPrice(double price) {
-        if(price > 0){
+        if(price >= 0){
             this.price = price;
         }
+
     }
 
     public int getQuantity() {
