@@ -1,4 +1,4 @@
-package org.example;
+package com.vinay.lms.model;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
