@@ -8,8 +8,18 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
        Scanner scanner = new Scanner(System.in);
+       LibraryServices service = new LibraryServices();
 
-        LibraryServices service = new LibraryServices();
+//        System.out.println("Enter Book ID");
+//       int BookId = scanner.nextInt();
+//       scanner.nextLine();
+//
+//        System.out.println("Enter Book Title");
+//        String BookTitle = scanner.nextLine();
+
+
+
+
 
        while(true){
 
@@ -26,7 +36,7 @@ public class Main {
 
            switch(choice){
                case 1:
-                   service.addBook();
+                   service.addBook(scanner);
                    break;
 
                case 2:
