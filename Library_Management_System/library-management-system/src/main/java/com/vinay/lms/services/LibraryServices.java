@@ -2,9 +2,14 @@ package com.vinay.lms.services;
 
 import com.vinay.lms.model.Book;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LibraryServices {
+
+    private ArrayList<Book> books = new ArrayList<>();
+
 
     public void addBook(Scanner scanner) {
 
@@ -54,8 +59,13 @@ public class LibraryServices {
         }
 
         Book book = new Book(bookId,title,author,category,price,quantity);
+        books.add(book);
+
+        System.out.println("\n Book Added Successfully!");
 
         System.out.println(book);
+
+        System.out.println("\nTotal Books : " + books.size());
     }
 
     public void viewBooks() {
