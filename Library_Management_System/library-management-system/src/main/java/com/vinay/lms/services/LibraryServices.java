@@ -61,7 +61,7 @@ public class LibraryServices {
         Book book = new Book(bookId,title,author,category,price,quantity);
         books.add(book);
 
-        System.out.println("\n Book Added Successfully!");
+        System.out.println("\n No books available in the library.");
 
         System.out.println(book);
 
@@ -69,7 +69,15 @@ public class LibraryServices {
     }
 
     public void viewBooks() {
-        System.out.println("View Books feature will be implemented here.");
+        if(books.isEmpty()){
+            System.out.println("\n Books List is Empty!");
+            return;
+        }
+        System.out.println("\n========== Library Books ==========");
+        for(Book book : books){
+            System.out.println(book);
+            System.out.println("--------------------------------");
+        }
     }
 
     public void searchBook() {
