@@ -1,12 +1,15 @@
 package com.vinay.lms.main;
 
 import com.vinay.lms.model.Book;
+import com.vinay.lms.services.LibraryServices;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
        Scanner scanner = new Scanner(System.in);
+
+        LibraryServices service = new LibraryServices();
 
        while(true){
 
@@ -23,23 +26,23 @@ public class Main {
 
            switch(choice){
                case 1:
-                   System.out.println("Add Book selected.");
+                   service.addBook();
                    break;
 
                case 2:
-                   System.out.println("View All Books selected.");
+                  service.viewBooks();
                    break;
 
                case 3:
-                   System.out.println("Search Book selected.");
+                   service.searchBook();
                    break;
 
                case 4:
-                   System.out.println("Update Book selected.");
+                   service.updateBook();
                    break;
 
                case 5:
-                   System.out.println("Delete Book selected.");
+                   service.deleteBook();
                    break;
 
                case 6:
