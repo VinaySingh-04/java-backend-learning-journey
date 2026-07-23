@@ -80,12 +80,64 @@ public class LibraryServices {
         }
     }
 
-    public void searchBook() {
-        System.out.println("Search Book feature will be implemented here.");
+    public void searchBook(Scanner scanner) {
+        if(books.isEmpty()){
+            System.out.println("\nNo Books Available");
+            return;
+        }
+
+        System.out.println("\nEnter Book Id to search :");
+        int searchId = scanner.nextInt();
+        scanner.nextLine();
+
+        boolean found = false;
+        for(Book book : books){
+            if(book.getBookId() == searchId){
+                System.out.println("\nBook Found!");
+                System.out.println(book);
+
+                found = true;
+                break;
+            }
+        }
     }
 
-    public void updateBook() {
-        System.out.println("Update Book feature will be implemented here.");
+    public void updateBook(Scanner scanner) {
+        if(books.isEmpty()){
+            System.out.println("\nNo Books Available");
+            return;
+        }
+
+        System.out.println("\nEnter Book Id to update :");
+        int updateId = scanner.nextInt();
+        scanner.nextLine();
+
+        for(Book book : books){
+            if(book.getBookId() == updateId){
+                System.out.println("Enter new Title: ");
+                book.setTitle(scanner.nextLine());
+
+                System.out.println("Enter new Author");
+                book.setAuthor(scanner.nextLine());
+
+                System.out.println("Enter new Category");
+                book.setCategory(scanner.nextLine());
+
+                System.out.println("Enter new Price");
+                book.setPrice(scanner.nextDouble());
+                scanner.nextLine();
+
+                System.out.println("Enter new Quantity");
+                book.setQuantity(scanner.nextInt());
+                scanner.nextLine();
+
+                System.out.println("\n✅ Book Updated Successfully!");
+
+                System.out.println(book);
+                return;
+            }
+        }
+        System.out.println("\n Book Not Found.");
     }
 
     public void deleteBook() {

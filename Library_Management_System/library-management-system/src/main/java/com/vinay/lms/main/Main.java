@@ -44,11 +44,11 @@ public class Main {
                    break;
 
                case 3:
-                   service.searchBook();
+                   service.searchBook(scanner);
                    break;
 
                case 4:
-                   service.updateBook();
+                   service.updateBook(scanner);
                    break;
 
                case 5:
