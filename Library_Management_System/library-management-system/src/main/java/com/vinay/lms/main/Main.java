@@ -10,16 +10,6 @@ public class Main {
        Scanner scanner = new Scanner(System.in);
        LibraryServices service = new LibraryServices();
 
-//        System.out.println("Enter Book ID");
-//       int BookId = scanner.nextInt();
-//       scanner.nextLine();
-//
-//        System.out.println("Enter Book Title");
-//        String BookTitle = scanner.nextLine();
-
-
-
-
 
        while(true){
 
@@ -52,7 +42,7 @@ public class Main {
                    break;
 
                case 5:
-                   service.deleteBook();
+                   service.deleteBook(scanner);
                    break;
 
                case 6:

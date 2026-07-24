@@ -140,8 +140,35 @@ public class LibraryServices {
         System.out.println("\n Book Not Found.");
     }
 
-    public void deleteBook() {
-        System.out.println("Delete Book feature will be implemented here.");
+    public void deleteBook(Scanner scanner) {
+
+        if(books.isEmpty()){
+            System.out.println("\nNo Books Available");
+            return;
+        }
+
+        System.out.println("\nEnter Book Id to Delete :");
+        int deletedId = scanner.nextInt();
+        scanner.nextLine();
+
+        Book booktoDelete = null;
+
+        for (Book book : books){
+            if(book.getBookId() == deletedId){
+                booktoDelete = book;
+                break;
+            }
+        }
+
+        if(booktoDelete != null){
+            books.remove(booktoDelete);
+
+            System.out.println("\nBook Deleted Successfully");
+        }else{
+            System.out.println("Book Not Found!");
+        }
+
+
     }
 
 }
