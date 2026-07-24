@@ -10,10 +10,21 @@ import java.util.List;
 public class fileUtil {
     public static void saveBook(List<Book> books){
         try (
-                BufferedWriter write = new BufferedWriter(new FileWriter("books.txt"))
+                BufferedWriter writer = new BufferedWriter(new FileWriter("books.txt"))
             ) {
+            for(Book book : books){
+                String data = book.getBookId() + "," +
+                        book.getTitle() + "," +
+                        book.getAuthor() + "," +
+                        book.getCategory() + "," +
+                        book.getPrice() + "," +
+                        book.getQuantity();
+                writer.write(data);
+                writer.newLine();
+            }
 
         }   catch (IOException e){
+            System.out.println("Error while saving books.");
 
         }
 
