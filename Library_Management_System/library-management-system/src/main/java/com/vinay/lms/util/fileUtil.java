@@ -21,6 +21,7 @@ public class fileUtil {
                         book.getQuantity();
                 writer.write(data);
                 writer.newLine();
+                writer.close();
             }
 
         }   catch (IOException e){

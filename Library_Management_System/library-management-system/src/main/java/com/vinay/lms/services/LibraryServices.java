@@ -1,6 +1,7 @@
 package com.vinay.lms.services;
 
 import com.vinay.lms.model.Book;
+import com.vinay.lms.util.fileUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,8 @@ public class LibraryServices {
         System.out.println("\n No books available in the library.");
 
         System.out.println(book);
+
+        fileUtil.saveBook(books);
 
         System.out.println("\nTotal Books : " + books.size());
     }
@@ -133,6 +136,8 @@ public class LibraryServices {
 
                 System.out.println("\n✅ Book Updated Successfully!");
 
+                 fileUtil.saveBook(books);
+
                 System.out.println(book);
                 return;
             }
@@ -163,6 +168,7 @@ public class LibraryServices {
         if(booktoDelete != null){
             books.remove(booktoDelete);
 
+            fileUtil.saveBook(books);
             System.out.println("\nBook Deleted Successfully");
         }else{
             System.out.println("Book Not Found!");
