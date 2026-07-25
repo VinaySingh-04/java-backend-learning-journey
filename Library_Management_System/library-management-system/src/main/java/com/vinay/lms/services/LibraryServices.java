@@ -11,7 +11,9 @@ public class LibraryServices {
 
     private ArrayList<Book> books = new ArrayList<>();
 
-
+      public LibraryServices(){
+          fileUtil.loadFile(books);
+      }
     public void addBook(Scanner scanner) {
 
         System.out.println("\n========== Add New Book ==========");
