@@ -1,6 +1,7 @@
 package com.vinay.lms.services;
 
 import com.vinay.lms.model.Book;
+import com.vinay.lms.model.Member;
 import com.vinay.lms.util.fileUtil;
 
 import java.util.ArrayList;
@@ -10,10 +11,13 @@ import java.util.Scanner;
 public class LibraryServices {
 
     private ArrayList<Book> books = new ArrayList<>();
+    private ArrayList<Member> members = new ArrayList<>();
+
 
       public LibraryServices(){
           fileUtil.loadFile(books);
       }
+
     public void addBook(Scanner scanner) {
 
         System.out.println("\n========== Add New Book ==========");
@@ -175,8 +179,124 @@ public class LibraryServices {
         }else{
             System.out.println("Book Not Found!");
         }
+      }
 
+    public void registerMember(Scanner scanner){
+        System.out.println("\n===== Register Member =====");
 
+        System.out.print("Enter Member ID: ");
+        int memberId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter Phone: ");
+        String phone = scanner.nextLine();
+
+        System.out.print("Enter Email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Enter Address: ");
+        String address = scanner.nextLine();
+
+        Member member = new Member(memberId,name,phone,email,address);
+        members.add(member);
+        System.out.println("Member Registered Successfully!");
+
+    }
+
+    public void viewAllMember(){
+        if (members.isEmpty()) {
+            System.out.println("No members registered.");
+            return;
+        }
+        System.out.println("\n===== All Members =====");
+
+        for (Member member : members) {
+
+            System.out.println(member);
+            System.out.println("----------------------");
+
+        }
+      }
+
+    public void searchMemberById(Scanner scanner){
+        System.out.println("\n===== Search Member =====");
+
+        System.out.print("Enter Member ID: ");
+        int memberId = scanner.nextInt();
+        scanner.nextLine();
+
+        for (Member member : members) {
+
+            if (member.getMemberId() == memberId) {
+
+                System.out.println(member);
+                return;
+            }
+        }
+
+        System.out.println("Member not found.");
+    }
+
+    public void updateMember(Scanner scanner){
+          System.out.println("\n===== Update Member =====");
+
+        System.out.print("Enter Member ID: ");
+        int memberId = scanner.nextInt();
+        scanner.nextLine();
+
+        for (Member member : members) {
+
+            if (member.getMemberId() == memberId) {
+
+                System.out.print("Enter New Name: ");
+                String name = scanner.nextLine();
+
+                System.out.print("Enter New Phone: ");
+                String phone = scanner.nextLine();
+
+                System.out.print("Enter New Email: ");
+                String email = scanner.nextLine();
+
+                System.out.print("Enter New Address: ");
+                String address = scanner.nextLine();
+
+                member.setName(name);
+                member.setPhone(phone);
+                member.setEmail(email);
+                member.setAddress(address);
+
+                System.out.println("Member Updated Successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Member Not Found.");
+      }
+
+    public void deleteMember(Scanner scanner) {
+
+        System.out.println("\n===== Delete Member =====");
+
+        System.out.print("Enter Member ID: ");
+        int memberId = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < members.size(); i++) {
+
+            if (members.get(i).getMemberId() == memberId) {
+
+                members.remove(i);
+
+                System.out.println("Member Deleted Successfully!");
+
+                return;
+            }
+        }
+
+        System.out.println("Member Not Found.");
     }
 
 }

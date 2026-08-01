@@ -19,7 +19,9 @@ public class Main {
            System.out.println("3. Search Book");
            System.out.println("4. Update Book");
            System.out.println("5. Delete Book");
-           System.out.println("6. Exit");
+           System.out.println("6. Register New Member");
+           System.out.println("7. View All Members");
+           System.out.println("8. Exit");
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
@@ -46,6 +48,14 @@ public class Main {
                    break;
 
                case 6:
+                  service.registerMember(scanner);
+                  break;
+
+               case 7:
+                   service.viewAllMember();
+                   break;
+
+               case 8:
                    System.out.println("Thank you for using Library Management System!");
                    scanner.close();
                    return;

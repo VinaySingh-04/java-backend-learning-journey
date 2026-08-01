@@ -1,6 +1,7 @@
 package com.vinay.lms.util;
 
 import com.vinay.lms.model.Book;
+import com.vinay.lms.model.Member;
 
 import java.io.*;
 import java.util.List;
@@ -61,6 +62,28 @@ public class fileUtil {
             }
         } catch (IOException e) {
             System.out.println("Error while Loading books.");
+        }
+    }
+
+    //for members
+    public static void saveMember(List<Member> members){
+        BufferedWriter writer = null;
+        try{
+            writer = new BufferedWriter(new FileWriter("members.txt"));
+
+            for(Member member : members){
+                writer.write(  member.getMemberId() + "," +
+                        member.getName() + "," +
+                        member.getPhone() + "," +
+                        member.getEmail() + "," +
+                        member.getAddress()
+                );
+                writer.newLine();
+            }
+            System.out.println("Member saved successfully.");
+
+        }catch(IOException e){
+            System.out.println("Error :- "+ e.getMessage() );
         }
     }
 }
