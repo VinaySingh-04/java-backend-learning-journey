@@ -19,6 +19,7 @@ public class LibraryServices {
     public LibraryServices(){
         fileUtil.loadFile(books);
         fileUtil.loadMember(members);
+        fileUtil.loadIssuedBooks(issueBooks);
       }
 
     public void addBook(Scanner scanner) {
@@ -395,6 +396,21 @@ public class LibraryServices {
 
         System.out.println("\nBook Issued Successfully!");
         System.out.println(issueBook);
+    }
+
+    public void viewIssuedBook() {
+        if (issueBooks.isEmpty()) {
+            System.out.println("\nno book have been issued.");
+        }
+
+        System.out.println("\n========== Issued Books ==========");
+
+        for (IssueBook issueBook : issueBooks) {
+
+            System.out.println(issueBook);
+            System.out.println("--------------------------------");
+
+        }
     }
 
 }

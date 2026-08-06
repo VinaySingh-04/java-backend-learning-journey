@@ -5,6 +5,7 @@ import com.vinay.lms.model.IssueBook;
 import com.vinay.lms.model.Member;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 
 public class fileUtil {
@@ -144,5 +145,44 @@ public class fileUtil {
         }
     }
 
-    public static  void loadIssuedBooks(List<IssueBook> issuedBooks){}
+    public static  void loadIssuedBooks(List<IssueBook> issuedBooks){
+        BufferedReader reader = null;
+        try{
+            reader = new BufferedReader(new FileReader("IssuedBooks.txt"));
+            String line ;
+            while((line = reader.readLine()) != null){
+                String[] data = line.split(",");
+                int issueId = Integer.parseInt(data[0]);
+                int memberId = Integer.parseInt(data[1]);
+                int bookId = Integer.parseInt(data[2]);
+
+                LocalDate issueDate = LocalDate.parse(data[3]);
+                LocalDate dueDate = LocalDate.parse(data[4]);
+
+                boolean returned = Boolean.parseBoolean(data[5]);
+
+                IssueBook issueBook = new IssueBook(
+                        issueId,
+                        memberId,
+                        bookId,
+                        issueDate,
+                        dueDate,
+                        returned
+                );
+
+                issuedBooks.add(issueBook);
+            }
+            System.out.println("Issued Books loaded successfully");
+        }catch(IOException e){
+            System.out.println("Error :- "+e.getMessage());
+        }finally{
+            try{
+                if(reader != null){
+                    reader.close();
+                }
+            }catch (IOException e){
+                System.out.println("Error :- "+e.getMessage());
+            }
+        }
+    }
 }
