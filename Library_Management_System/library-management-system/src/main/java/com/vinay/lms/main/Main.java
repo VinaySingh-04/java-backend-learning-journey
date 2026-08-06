@@ -19,9 +19,20 @@ public class Main {
            System.out.println("3. Search Book");
            System.out.println("4. Update Book");
            System.out.println("5. Delete Book");
+           System.out.println();
+
+           System.out.println("========== Member Management ==========");
            System.out.println("6. Register New Member");
            System.out.println("7. View All Members");
-           System.out.println("8. Exit");
+           System.out.println("8. Search Member");
+           System.out.println("9. Update Member");
+           System.out.println("10. Delete Member");
+           System.out.println();
+
+           System.out.println("\n========== Issue Book Management ==========");
+           System.out.println("11. Issue Book");
+
+           System.out.println("12. Exit");
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
@@ -56,6 +67,22 @@ public class Main {
                    break;
 
                case 8:
+                   service.searchMemberById(scanner);
+                   break;
+
+               case 9:
+                   service.updateMember(scanner);
+                   break;
+
+               case 10:
+                   service.deleteMember(scanner);
+                   break;
+
+               case 11:
+                   service.issueBook(scanner);
+                   break;
+
+               case 12:
                    System.out.println("Thank you for using Library Management System!");
                    scanner.close();
                    return;

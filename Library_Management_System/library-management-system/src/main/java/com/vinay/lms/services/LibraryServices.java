@@ -1,21 +1,24 @@
 package com.vinay.lms.services;
 
 import com.vinay.lms.model.Book;
+import com.vinay.lms.model.IssueBook;
 import com.vinay.lms.model.Member;
 import com.vinay.lms.util.fileUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class LibraryServices {
 
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<Member> members = new ArrayList<>();
+    private ArrayList<IssueBook> issueBooks = new ArrayList<>();
 
 
-      public LibraryServices(){
-          fileUtil.loadFile(books);
+    public LibraryServices(){
+        fileUtil.loadFile(books);
+        fileUtil.loadMember(members);
       }
 
     public void addBook(Scanner scanner) {
@@ -181,6 +184,9 @@ public class LibraryServices {
         }
       }
 
+
+      //Memebers
+
     public void registerMember(Scanner scanner){
         System.out.println("\n===== Register Member =====");
 
@@ -202,6 +208,7 @@ public class LibraryServices {
 
         Member member = new Member(memberId,name,phone,email,address);
         members.add(member);
+        fileUtil.saveMember(members);
         System.out.println("Member Registered Successfully!");
 
     }
@@ -251,6 +258,10 @@ public class LibraryServices {
 
             if (member.getMemberId() == memberId) {
 
+                System.out.println("Enter new Id");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+
                 System.out.print("Enter New Name: ");
                 String name = scanner.nextLine();
 
@@ -267,6 +278,8 @@ public class LibraryServices {
                 member.setPhone(phone);
                 member.setEmail(email);
                 member.setAddress(address);
+
+                fileUtil.saveMember(members);
 
                 System.out.println("Member Updated Successfully!");
                 return;
@@ -289,6 +302,7 @@ public class LibraryServices {
             if (members.get(i).getMemberId() == memberId) {
 
                 members.remove(i);
+                fileUtil.saveMember(members);
 
                 System.out.println("Member Deleted Successfully!");
 
@@ -297,6 +311,90 @@ public class LibraryServices {
         }
 
         System.out.println("Member Not Found.");
+    }
+
+
+    //issueBook
+
+    public void issueBook(Scanner scanner) {
+        System.out.println("\n===== Issue Book =====");
+
+        System.out.print("Enter Member ID: ");
+        int memberId = scanner.nextInt();
+        scanner.nextLine();
+
+        Member foundMember = null;
+
+        for (Member member : members) {
+
+            if (member.getMemberId() == memberId) {
+
+                foundMember = member;
+                break;
+            }
+        }
+
+        if (foundMember == null) {
+
+            System.out.println("Member not found.");
+            return;
+        }
+
+        System.out.print("Enter Book ID: ");
+        int bookId = scanner.nextInt();
+        scanner.nextLine();
+
+        Book foundBook = null;
+
+        for (Book book : books) {
+
+            if (book.getBookId() == bookId) {
+
+                foundBook = book;
+                break;
+            }
+        }
+
+        if (foundBook == null) {
+
+            System.out.println("Book not found.");
+            return;
+        }
+
+        if (foundBook.getQuantity() <= 0) {
+
+            System.out.println("Book is out of stock.");
+            return;
+        }
+
+        System.out.println("\nMember Found : " + foundMember.getName());
+        System.out.println("Book Found   : " + foundBook.getTitle());
+
+        System.out.println("\nValidation Successful");
+        System.out.println("Ready to Issue Book...");
+
+        int issueId = issueBooks.size() + 1;
+        LocalDate issueDate = LocalDate.now();
+        LocalDate dueDate = issueDate.plusDays(7);
+
+        boolean returned = false;
+
+        IssueBook issueBook = new IssueBook( issueId,
+                foundMember.getMemberId(),
+                foundBook.getBookId(),
+                issueDate,
+                dueDate,
+                returned
+        );
+
+        issueBooks.add(issueBook);
+        fileUtil.saveIssuedBooks(issueBooks);
+
+        foundBook.setQuantity(foundBook.getQuantity()-1);
+        fileUtil.saveBook(books);
+
+        System.out.println("\nBook Issued Successfully!");
+        System.out.println(issueBook);
     }
 
 }
