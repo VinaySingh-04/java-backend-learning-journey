@@ -413,4 +413,57 @@ public class LibraryServices {
         }
     }
 
+    public void returnBook(Scanner scanner){
+        System.out.println("\n===== Return Book ======");
+        System.out.println("Enter Issue Id: ");
+        int issueId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Searching Issue Id : " + issueId);
+
+        IssueBook foundIssue = null;
+
+        for(IssueBook issueBook : issueBooks){
+            if(issueBook.getIssueId() == issueId){
+                foundIssue = issueBook;
+                break;
+            }
+        }
+
+        if(foundIssue == null){
+            System.out.println("Issue record Not Found.");
+            return;
+        }
+
+        System.out.println("\nIssue Record Found. ");
+        System.out.println(foundIssue);
+
+        if(foundIssue.isReturned()){
+            System.out.println("\nThis book has already been returned.");
+            return;
+        }
+
+        Book foundBook = null;
+        for(Book book : books){
+            if(book.getBookId() == foundIssue.getBookId()){
+                foundBook = book;
+                break;
+            }
+        }
+
+        if(foundBook == null){
+            System.out.println("Book Record Not Found.");
+            return;
+        }
+
+        foundBook.setQuantity(foundBook.getQuantity() + 1);
+        foundIssue.setReturned(true);
+        fileUtil.saveBook(books);
+        fileUtil.saveIssuedBooks(issueBooks);
+
+        System.out.println("\nBook Returned Successfully!");
+        System.out.println("Book Title : " + foundBook.getTitle());
+        System.out.println("Available Quantity : " + foundBook.getQuantity());
+
+    }
+
 }

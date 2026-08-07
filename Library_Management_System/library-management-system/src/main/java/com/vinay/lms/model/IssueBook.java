@@ -70,5 +70,15 @@ public class IssueBook {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "IssueBook{" +
+                "issueId=" + issueId +
+                ", memberId=" + memberId +
+                ", bookId=" + bookId +
+                ", issueDate=" + issueDate +
+                ", dueDate=" + dueDate +
+                ", returned=" + returned +
+                '}';
+    }
 }
