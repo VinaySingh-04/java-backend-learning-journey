@@ -14,29 +14,36 @@ public class Main {
        while(true){
 
            System.out.println("\n========== Library Management System ==========");
+           System.out.println("0. DashBoard");
            System.out.println("1. Add Book");
            System.out.println("2. View All Books");
-           System.out.println("3. Search Book");
-           System.out.println("4. Update Book");
-           System.out.println("5. Delete Book");
+           System.out.println("3. Search Book By Id");
+           System.out.println("4. Search Book By Title");
+           System.out.println("5. Update Book");
+           System.out.println("6. Delete Book");
            System.out.println();
            System.out.println("========== Member Management ==========");
-           System.out.println("6. Register New Member");
-           System.out.println("7. View All Members");
-           System.out.println("8. Search Member");
-           System.out.println("9. Update Member");
-           System.out.println("10. Delete Member");
+           System.out.println("7. Register New Member");
+           System.out.println("8. View All Members");
+           System.out.println("9. Search Member By Id");
+           System.out.println("10. Search Member By Name");
+           System.out.println("11. Update Member");
+           System.out.println("12. Delete Member");
            System.out.println();
            System.out.println("\n========== Issue Book Management ==========");
-           System.out.println("11. Issue Book");
-           System.out.println("12. View Issued Books");
-           System.out.println("13. Return Book");
-           System.out.println("14. Exit");
+           System.out.println("13. Issue Book");
+           System.out.println("14. View Issued Books");
+           System.out.println("15. Return Book");
+           System.out.println("16. Exit");
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
 
            switch(choice){
+               case 0:
+                   service.showDashBoard();
+                   break;
+
                case 1:
                    service.addBook(scanner);
                    break;
@@ -50,46 +57,54 @@ public class Main {
                    break;
 
                case 4:
-                   service.updateBook(scanner);
+                   service.searchBookByTitle(scanner);
                    break;
 
                case 5:
-                   service.deleteBook(scanner);
+                   service.updateBook(scanner);
                    break;
 
                case 6:
+                   service.deleteBook(scanner);
+                   break;
+
+               case 7:
                   service.registerMember(scanner);
                   break;
 
-               case 7:
+               case 8:
                    service.viewAllMember();
                    break;
 
-               case 8:
+               case 9:
                    service.searchMemberById(scanner);
                    break;
 
-               case 9:
-                   service.updateMember(scanner);
-                   break;
-
                case 10:
-                   service.deleteMember(scanner);
+                   service.searchMemberByName(scanner);
                    break;
 
                case 11:
-                   service.issueBook(scanner);
+                   service.updateMember(scanner);
                    break;
 
                case 12:
-                   service.viewIssuedBook();
+                   service.deleteMember(scanner);
                    break;
 
                case 13:
-                   service.returnBook(scanner);
+                   service.issueBook(scanner);
                    break;
 
                case 14:
+                   service.viewIssuedBook();
+                   break;
+
+               case 15:
+                   service.returnBook(scanner);
+                   break;
+
+               case 16:
                    System.out.println("Thank you for using Library Management System!");
                    scanner.close();
                    return;

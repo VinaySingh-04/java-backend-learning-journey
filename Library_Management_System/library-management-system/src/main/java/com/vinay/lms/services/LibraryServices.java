@@ -1,5 +1,6 @@
 package com.vinay.lms.services;
 
+
 import com.vinay.lms.model.Book;
 import com.vinay.lms.model.IssueBook;
 import com.vinay.lms.model.Member;
@@ -32,7 +33,7 @@ public class LibraryServices {
             System.out.println("Book ID should be greater than 0.");
             return;
         }
-        scanner.nextLine(); // consume newline
+        scanner.nextLine();
 
         System.out.print("Enter Title: ");
         String title = scanner.nextLine();
@@ -64,6 +65,7 @@ public class LibraryServices {
 
         System.out.print("Enter Quantity: ");
         int quantity = scanner.nextInt();
+        scanner.nextLine();
         if(quantity < 0){
             System.out.println("Quantity should be greater than 0.");
             return;
@@ -112,6 +114,31 @@ public class LibraryServices {
                 found = true;
                 break;
             }
+        }
+    }
+
+    public void searchBookByTitle(Scanner scanner){
+        System.out.println("\n===== Search Book By Title =====");
+
+        System.out.print("Enter Book Title: ");
+        String title = scanner.nextLine().toLowerCase();
+
+        boolean   FoundBook = false;
+
+        for (Book book : books){
+            if(book.getTitle().toLowerCase().contains(title)){
+
+                System.out.println("\nBook Found!");
+                System.out.println(book);
+
+                FoundBook = true;
+                break;
+
+            }
+        }
+
+        if(!FoundBook){
+            System.out.println("\nBook Not Found.");
         }
     }
 
@@ -246,6 +273,35 @@ public class LibraryServices {
         }
 
         System.out.println("Member not found.");
+    }
+
+
+    public void searchMemberByName(Scanner scanner){
+        System.out.println("\n===== Search Member By Name =====");
+        scanner.nextInt();
+        System.out.print("Enter Member Name: ");
+        String name = scanner.nextLine().toLowerCase();
+
+        boolean found = false;
+
+        for (Member member : members) {
+
+            if (member.getName().toLowerCase().contains(name)) {
+
+                System.out.println("\nMember Found!");
+                System.out.println(member);
+                System.out.println("-------------------------");
+
+                found = true;
+            }
+        }
+
+        if (!found) {
+
+            System.out.println("\nMember Not Found.");
+
+        }
+
     }
 
     public void updateMember(Scanner scanner){
@@ -400,16 +456,43 @@ public class LibraryServices {
 
     public void viewIssuedBook() {
         if (issueBooks.isEmpty()) {
-            System.out.println("\nno book have been issued.");
+
+            System.out.println("\nNo books have been issued.");
+            return;
+
         }
 
         System.out.println("\n========== Issued Books ==========");
 
         for (IssueBook issueBook : issueBooks) {
 
-            System.out.println(issueBook);
-            System.out.println("--------------------------------");
+            Book book = findBookByID(issueBook.getBookId());
 
+            Member member = findMemberByID(issueBook.getMemberId());
+
+            System.out.println("----------------------------------------");
+            System.out.println("Issue ID      : " + issueBook.getIssueId());
+
+            if (member != null) {
+                System.out.println("Member Name   : " + member.getName());
+                System.out.println("Member ID     : " + member.getMemberId());
+            } else {
+                System.out.println("Member        : Not Found");
+            }
+
+            if (book != null) {
+                System.out.println("Book Title    : " + book.getTitle());
+                System.out.println("Book ID       : " + book.getBookId());
+            } else {
+                System.out.println("Book          : Not Found");
+            }
+
+            System.out.println("Issue Date    : " + issueBook.getIssueDate());
+            System.out.println("Due Date      : " + issueBook.getDueDate());
+
+            System.out.println("Status        : " + (issueBook.isReturned() ? "Returned" : "Issued"));
+
+            System.out.println("----------------------------------------");
         }
     }
 
@@ -464,6 +547,63 @@ public class LibraryServices {
         System.out.println("Book Title : " + foundBook.getTitle());
         System.out.println("Available Quantity : " + foundBook.getQuantity());
 
+    }
+
+    private Book findBookByID(int bookId){
+
+            for(Book book : books){
+                if(book.getBookId() == bookId){
+                    return  book;
+                }
+            }
+            return null;
+    }
+
+    private Member findMemberByID(int memberId){
+        for(Member member : members){
+            if(member.getMemberId() == memberId){
+                return  member;
+            }
+        }
+        return null;
+    }
+
+    public void showDashBoard(){
+        int totalCopies = 0;
+        int returnedBooks = 0;
+        int currentlyIssued = 0;
+
+        for (Book book : books) {
+
+            totalCopies += book.getQuantity();
+
+        }
+
+        for (IssueBook issueBook : issueBooks) {
+
+            if (issueBook.isReturned()) {
+
+                returnedBooks++;
+
+            } else {
+
+                currentlyIssued++;
+
+            }
+
+        }
+
+        System.out.println("\n========================================");
+        System.out.println("           LIBRARY DASHBOARD");
+        System.out.println("========================================");
+
+        System.out.println("Total Book Records : " + books.size());
+        System.out.println("Total Book Copies  : " + totalCopies);
+        System.out.println("Total Members      : " + members.size());
+        System.out.println("Returned Books     : " + returnedBooks);
+        System.out.println("Currently Issued   : " + currentlyIssued);
+
+        System.out.println("========================================");
     }
 
 }
