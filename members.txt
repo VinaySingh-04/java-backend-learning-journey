@@ -1,10 +1,4 @@
-1001,Vinay Singh,9876543210,vinay@gmail.com,Delhi
-1002,Rahul Sharma,9876501234,rahul@gmail.com,Noida
-1003,Priya Verma,9811122233,priya@gmail.com,Gurgaon
-1004,Amit Kumar,9898989898,amit@gmail.com,Ghaziabad
-1005,Neha Singh,9123456789,neha@gmail.com,Faridabad
-1006,Rohan Gupta,9000011111,rohan@gmail.com,Delhi
-1007,Anjali Mehta,9888877777,anjali@gmail.com,Noida
-1008,Karan Malhotra,9871234567,karan@gmail.com,Gurgaon
-1009,Sneha Kapoor,9812345678,sneha@gmail.com,Delhi
-1010,Arjun Patel,9999988888,arjun@gmail.com,Jaipur
+101,Vinay Singh,9876543210,vinay@gmail.com,Delhi
+102,Rahul Sharma,9876543211,rahul@gmail.com,Noida
+103,Aman Kumar,9876543212,aman@gmail.com,Ghaziabad
+104,Rohit Verma,9876543213,rohit@gmail.com,Delhi

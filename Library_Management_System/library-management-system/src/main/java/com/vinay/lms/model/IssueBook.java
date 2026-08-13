@@ -9,6 +9,8 @@ public class IssueBook {
     private LocalDate issueDate;
     private LocalDate dueDate;
     private boolean returned;
+    private double fine;
+    private LocalDate returnDate;
 
     public IssueBook(int issueId, int memberId, int bookId, LocalDate issueDate, LocalDate dueDate, boolean returned) {
         this.issueId = issueId;
@@ -17,9 +19,28 @@ public class IssueBook {
         this.issueDate = issueDate;
         this.dueDate = dueDate;
         this.returned = returned;
-
+        this.returnDate = null;
+        this.fine = 0;
     }
 
+    public IssueBook(int issueId,
+                     int memberId,
+                     int bookId,
+                     LocalDate issueDate,
+                     LocalDate dueDate,
+                     LocalDate returnDate,
+                     boolean returned,
+                     double fine) {
+
+        this.issueId = issueId;
+        this.memberId = memberId;
+        this.bookId = bookId;
+        this.issueDate = issueDate;
+        this.dueDate = dueDate;
+        this.returnDate = returnDate;
+        this.returned = returned;
+        this.fine = fine;
+    }
 
     public int getIssueId() {
         return issueId;
@@ -70,6 +91,22 @@ public class IssueBook {
     }
 
 
+    public double getFine() {
+        return fine;
+    }
+
+    public void setFine(double fine) {
+        this.fine = fine;
+    }
+
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
     @Override
     public String toString() {
         return "IssueBook{" +
@@ -79,6 +116,9 @@ public class IssueBook {
                 ", issueDate=" + issueDate +
                 ", dueDate=" + dueDate +
                 ", returned=" + returned +
+                ", fine=" + fine +
+                ", returnDate=" + returnDate +
                 '}';
     }
 }
+

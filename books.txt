@@ -1,5 +1,5 @@
-101,Java Programming,James Gosling,Programming,499.99,10
-102,Clean Code,Robert C. Martin,Programming,699.99,5
-103,Spring Boot in Action,Craig Walls,Programming,799.99,7
-104,Head First Java,Kathy Sierra,Programming,599.99,8
-105,Effective Java,Joshua Bloch,Programming,899.99,4
+201,Java Programming,James Gosling,Programming,500.0,5
+202,Effective Java,Joshua Bloch,Programming,700.0,3
+203,Head First Java,Kathy Sierra,Programming,600.0,4
+204,Clean Code,Robert Martin,Software Engineering,800.0,2
+205,Design Patterns,Erich Gamma,Software Engineering,900.0,4

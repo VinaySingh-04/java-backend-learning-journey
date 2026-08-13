@@ -7,6 +7,7 @@ import com.vinay.lms.model.Member;
 import com.vinay.lms.util.fileUtil;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -516,13 +517,20 @@ public class LibraryServices {
             System.out.println("Issue record Not Found.");
             return;
         }
-
         System.out.println("\nIssue Record Found. ");
         System.out.println(foundIssue);
 
         if(foundIssue.isReturned()){
             System.out.println("\nThis book has already been returned.");
             return;
+        }
+
+        LocalDate returnDate = LocalDate.now();
+
+        double fine = calculateFine(foundIssue.getDueDate(), returnDate);
+        long lateDays = 0;
+        if(returnDate.isAfter(foundIssue.getDueDate())){
+            lateDays = ChronoUnit.DAYS.between(foundIssue.getDueDate(), returnDate);
         }
 
         Book foundBook = null;
@@ -539,13 +547,22 @@ public class LibraryServices {
         }
 
         foundBook.setQuantity(foundBook.getQuantity() + 1);
+        foundIssue.setReturnDate(returnDate);
+        foundIssue.setFine(fine);
         foundIssue.setReturned(true);
         fileUtil.saveBook(books);
         fileUtil.saveIssuedBooks(issueBooks);
+        System.out.println("\n===== Return Summary =====");
+
+        System.out.println("Book Title : " + foundBook.getTitle());
+        System.out.println("Due Date   : " + foundIssue.getDueDate());
+        System.out.println("Return Date: " + returnDate);
+        System.out.println("Late Days  : " + lateDays);
+        System.out.println("Fine       : ₹" + fine);
+
+        System.out.println("Available Quantity : " + foundBook.getQuantity());
 
         System.out.println("\nBook Returned Successfully!");
-        System.out.println("Book Title : " + foundBook.getTitle());
-        System.out.println("Available Quantity : " + foundBook.getQuantity());
 
     }
 
@@ -605,5 +622,16 @@ public class LibraryServices {
 
         System.out.println("========================================");
     }
+
+    private double calculateFine(LocalDate dueDate,LocalDate returnDate){
+        if(!returnDate.isAfter(dueDate)){
+            return 0;
+        }
+        long lateDays = ChronoUnit.DAYS.between(returnDate,dueDate);
+        double finePerDays = 10 ;
+        return lateDays * finePerDays;
+    }
+
+
 
 }

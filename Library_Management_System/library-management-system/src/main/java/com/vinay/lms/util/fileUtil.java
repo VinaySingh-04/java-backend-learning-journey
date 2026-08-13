@@ -124,7 +124,9 @@ public class fileUtil {
                         issueBook.getBookId() + "," +
                         issueBook.getIssueDate() + "," +
                         issueBook.getDueDate() + "," +
-                        issueBook.isReturned()
+                        issueBook.getReturnDate() + "," +
+                        issueBook.isReturned() + "," +
+                        issueBook.getFine()
                 );
                 writer.newLine();
             }
@@ -159,7 +161,17 @@ public class fileUtil {
                 LocalDate issueDate = LocalDate.parse(data[3]);
                 LocalDate dueDate = LocalDate.parse(data[4]);
 
-                boolean returned = Boolean.parseBoolean(data[5]);
+
+                LocalDate returnDate = null;
+
+                if (!data[5].equals("null")) {
+                    returnDate = LocalDate.parse(data[5]);
+                }
+
+
+                boolean returned = Boolean.parseBoolean(data[6]);
+
+                double fine = Double.parseDouble(data[7]);
 
                 IssueBook issueBook = new IssueBook(
                         issueId,
@@ -167,7 +179,9 @@ public class fileUtil {
                         bookId,
                         issueDate,
                         dueDate,
-                        returned
+                        returnDate,
+                        returned,
+                        fine
                 );
 
                 issuedBooks.add(issueBook);
