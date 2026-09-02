@@ -632,6 +632,91 @@ public class LibraryServices {
         return lateDays * finePerDays;
     }
 
+    public void searchIssuedBookById(Scanner scanner) {
 
+        System.out.println("\n===== Search Issued Book =====");
 
+        System.out.print("Enter Issue ID: ");
+        int issueId = scanner.nextInt();
+        scanner.nextLine();
+
+        IssueBook foundIssue = null;
+
+        for (IssueBook issueBook : issueBooks) {
+
+            if (issueBook.getIssueId() == issueId) {
+
+                foundIssue = issueBook;
+                break;
+            }
+        }
+
+        if (foundIssue == null) {
+
+            System.out.println("Issue record not found.");
+            return;
+        }
+
+        Member foundMember =
+                findMemberByID(foundIssue.getMemberId());
+
+        Book foundBook =
+                findBookByID(foundIssue.getBookId());
+
+        System.out.println("\n========== ISSUE DETAILS ==========");
+
+        System.out.println("Issue ID      : " +
+                foundIssue.getIssueId());
+
+        if (foundMember != null) {
+
+            System.out.println("Member Name   : " +
+                    foundMember.getName());
+
+            System.out.println("Member ID     : " +
+                    foundMember.getMemberId());
+
+        } else {
+
+            System.out.println("Member        : Not Found");
+        }
+
+        if (foundBook != null) {
+
+            System.out.println("Book Title    : " +
+                    foundBook.getTitle());
+
+            System.out.println("Book ID       : " +
+                    foundBook.getBookId());
+
+        } else {
+
+            System.out.println("Book          : Not Found");
+        }
+
+        System.out.println("Issue Date    : " +
+                foundIssue.getIssueDate());
+
+        System.out.println("Due Date      : " +
+                foundIssue.getDueDate());
+
+        if (foundIssue.isReturned()) {
+
+            System.out.println("Return Date   : " +
+                    foundIssue.getReturnDate());
+
+            System.out.println("Status        : Returned");
+
+        } else {
+
+            System.out.println("Return Date   : Not Returned Yet");
+
+            System.out.println("Status        : Issued");
+        }
+
+        System.out.println("Fine          : ₹" +
+                foundIssue.getFine());
+
+        System.out.println("===================================");
+    }
 }

@@ -33,8 +33,9 @@ public class Main {
            System.out.println("\n========== Issue Book Management ==========");
            System.out.println("13. Issue Book");
            System.out.println("14. View Issued Books");
-           System.out.println("15. Return Book");
-           System.out.println("16. Exit");
+           System.out.println("15. Search Issued Book");
+           System.out.println("16. Return Book");
+           System.out.println("17. Exit");
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
@@ -101,10 +102,14 @@ public class Main {
                    break;
 
                case 15:
-                   service.returnBook(scanner);
+                   service.searchIssuedBookById(scanner);
                    break;
 
                case 16:
+                   service.returnBook(scanner);
+                   break;
+
+               case 17:
                    System.out.println("Thank you for using Library Management System!");
                    scanner.close();
                    return;
