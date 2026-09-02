@@ -719,4 +719,63 @@ public class LibraryServices {
 
         System.out.println("===================================");
     }
+
+    public void showOverdueBooks() {
+
+        if (issueBooks.isEmpty()) {
+            System.out.println("\nNo issue books found.");
+            return;
+        }
+
+        LocalDate currentDate = LocalDate.now();
+
+        boolean foundOverdue = false;
+
+        System.out.println("\n========== Overdue Books ==========");
+
+        for (IssueBook issueBook : issueBooks) {
+
+            if (!issueBook.isReturned()
+                    && currentDate.isAfter(issueBook.getDueDate())) {
+
+                foundOverdue = true;
+
+                Book foundBook = findBookByID(issueBook.getBookId());
+                Member foundMember = findMemberByID(issueBook.getMemberId());
+
+                long lateDays = ChronoUnit.DAYS.between(
+                        issueBook.getDueDate(),
+                        currentDate
+                );
+
+                System.out.println("----------------------------------------");
+
+                System.out.println("Issue ID      : " + issueBook.getIssueId());
+
+                if (foundMember != null) {
+                    System.out.println("Member Name   : " + foundMember.getName());
+                    System.out.println("Member ID     : " + foundMember.getMemberId());
+                } else {
+                    System.out.println("Member        : Not Found");
+                }
+
+                if (foundBook != null) {
+                    System.out.println("Book Title    : " + foundBook.getTitle());
+                    System.out.println("Book ID       : " + foundBook.getBookId());
+                } else {
+                    System.out.println("Book          : Not Found");
+                }
+
+                System.out.println("Issue Date    : " + issueBook.getIssueDate());
+                System.out.println("Due Date      : " + issueBook.getDueDate());
+                System.out.println("Late Days     : " + lateDays);
+
+                System.out.println("----------------------------------------");
+            }
+        }
+
+        if (!foundOverdue) {
+            System.out.println("No overdue books found.");
+        }
+    }
 }
