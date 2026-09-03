@@ -35,8 +35,9 @@ public class Main {
            System.out.println("14. View Issued Books");
            System.out.println("15. Search Issued Book");
            System.out.println("16. Return Book");
-           System.out.println("17. Return Book");
-           System.out.println("18. Exit");
+           System.out.println("17. Show Overdue Book");
+           System.out.println("18. Show Remaining Days");
+           System.out.println("19. Exit");
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
@@ -115,6 +116,10 @@ public class Main {
                    break;
 
                case 18:
+                   service.showRemainingDays();
+                   break;
+
+               case 19:
                    System.out.println("Thank you for using Library Management System!");
                    scanner.close();
                    return;

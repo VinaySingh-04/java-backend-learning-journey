@@ -586,15 +586,21 @@ public class LibraryServices {
     }
 
     public void showDashBoard(){
+
         int totalCopies = 0;
         int returnedBooks = 0;
         int currentlyIssued = 0;
+        int overdueBooks = 0;
+        double totalFine = 0;
+
 
         for (Book book : books) {
 
             totalCopies += book.getQuantity();
-
         }
+
+
+        LocalDate today = LocalDate.now();
 
         for (IssueBook issueBook : issueBooks) {
 
@@ -602,12 +608,17 @@ public class LibraryServices {
 
                 returnedBooks++;
 
+                totalFine += issueBook.getFine();
+
             } else {
 
                 currentlyIssued++;
 
-            }
+                if (today.isAfter(issueBook.getDueDate())) {
 
+                    overdueBooks++;
+                }
+            }
         }
 
         System.out.println("\n========================================");
@@ -615,10 +626,15 @@ public class LibraryServices {
         System.out.println("========================================");
 
         System.out.println("Total Book Records : " + books.size());
-        System.out.println("Total Book Copies  : " + totalCopies);
+        System.out.println("Available Copies   : " + totalCopies);
+
         System.out.println("Total Members      : " + members.size());
-        System.out.println("Returned Books     : " + returnedBooks);
+
         System.out.println("Currently Issued   : " + currentlyIssued);
+        System.out.println("Returned Books     : " + returnedBooks);
+        System.out.println("Overdue Books      : " + overdueBooks);
+
+        System.out.println("Total Fine         : ₹" + totalFine);
 
         System.out.println("========================================");
     }
@@ -776,6 +792,87 @@ public class LibraryServices {
 
         if (!foundOverdue) {
             System.out.println("No overdue books found.");
+        }
+    }
+
+    public void  showRemainingDays(){
+
+        if (issueBooks.isEmpty()) {
+            System.out.println("\nNo issue books found.");
+            return;
+        }
+
+        LocalDate today = LocalDate.now();
+
+        System.out.println("\n========== Book Due Status ==========");
+
+        boolean foundActiveBook = false;
+
+        for (IssueBook issueBook : issueBooks) {
+
+            // Ignore returned books
+            if (!issueBook.isReturned()) {
+
+                foundActiveBook = true;
+
+                Book foundBook = findBookByID(issueBook.getBookId());
+                Member foundMember = findMemberByID(issueBook.getMemberId());
+
+                System.out.println("----------------------------------------");
+
+                System.out.println("Issue ID      : " + issueBook.getIssueId());
+
+                if (foundMember != null) {
+                    System.out.println("Member Name   : " + foundMember.getName());
+                    System.out.println("Member ID     : " + foundMember.getMemberId());
+                } else {
+                    System.out.println("Member        : Not Found");
+                }
+
+                if (foundBook != null) {
+                    System.out.println("Book Title    : " + foundBook.getTitle());
+                    System.out.println("Book ID       : " + foundBook.getBookId());
+                } else {
+                    System.out.println("Book          : Not Found");
+                }
+
+                System.out.println("Issue Date    : " + issueBook.getIssueDate());
+                System.out.println("Due Date      : " + issueBook.getDueDate());
+
+                if (today.isBefore(issueBook.getDueDate())) {
+
+                    long remainingDays =
+                            ChronoUnit.DAYS.between(
+                                    today,
+                                    issueBook.getDueDate()
+                            );
+
+                    System.out.println("Status        : Active");
+                    System.out.println("Remaining Days: " + remainingDays);
+
+                } else if (today.isEqual(issueBook.getDueDate())) {
+
+                    System.out.println("Status        : Due Today");
+                    System.out.println("Remaining Days: 0");
+
+                } else {
+
+                    long lateDays =
+                            ChronoUnit.DAYS.between(
+                                    issueBook.getDueDate(),
+                                    today
+                            );
+
+                    System.out.println("Status        : OVERDUE");
+                    System.out.println("Late Days     : " + lateDays);
+                }
+
+                System.out.println("----------------------------------------");
+            }
+        }
+
+        if (!foundActiveBook) {
+            System.out.println("No currently issued books found.");
         }
     }
 }
