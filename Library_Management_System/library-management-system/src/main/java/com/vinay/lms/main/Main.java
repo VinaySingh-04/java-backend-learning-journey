@@ -37,7 +37,8 @@ public class Main {
            System.out.println("16. Return Book");
            System.out.println("17. Show Overdue Book");
            System.out.println("18. Show Remaining Days");
-           System.out.println("19. Exit");
+           System.out.println("19. Show Fine Reports");
+           System.out.println("20. Exit");
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
@@ -120,6 +121,11 @@ public class Main {
                    break;
 
                case 19:
+                   service.showFineReports();
+                   break;
+
+
+               case 20:
                    System.out.println("Thank you for using Library Management System!");
                    scanner.close();
                    return;
