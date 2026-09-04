@@ -219,7 +219,21 @@ public class LibraryServices {
             }
         }
 
+        boolean isIssued = false;
+
+        for(IssueBook issueBook : issueBooks){
+            if(issueBook.getBookId() == deletedId && !issueBook.isReturned()){
+                isIssued = true;
+                break;
+            }
+        }
+        if(isIssued){
+            System.out.println("Book is currently issued. Cannot delete.");
+            return;
+        }
+
         if(booktoDelete != null){
+
             books.remove(booktoDelete);
 
             fileUtil.saveBook(books);
