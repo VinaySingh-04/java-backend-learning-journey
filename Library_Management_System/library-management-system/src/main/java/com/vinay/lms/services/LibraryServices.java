@@ -926,4 +926,23 @@ public class LibraryServices {
             System.out.println("No fine records found.");
         }
     }
+
+    public void showTotalfine() {
+
+        if (issueBooks.isEmpty()) {
+            System.out.println("There is no issue books.");
+            return;
+        }
+
+        double totalFine = 0;
+
+        for (IssueBook issueBook : issueBooks) {
+
+            if (issueBook.isReturned() && issueBook.getFine() > 0) {
+                totalFine = totalFine + issueBook.getFine();
+            }
+        }
+
+        System.out.println("Total Fine : ₹" + totalFine);
+    }
 }
