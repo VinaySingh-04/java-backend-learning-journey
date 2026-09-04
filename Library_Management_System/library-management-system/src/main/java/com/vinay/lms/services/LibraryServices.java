@@ -400,6 +400,18 @@ public class LibraryServices {
         int memberId = scanner.nextInt();
         scanner.nextLine();
 
+        boolean hasBorrowedBook  = false;
+        for(IssueBook issueBook : issueBooks){
+            if(issueBook.getMemberId() == memberId && !issueBook.isReturned()){
+                hasBorrowedBook  = true;
+                break;
+            }
+        }
+        if(hasBorrowedBook){
+            System.out.println("Member has borrowed books. Cannot delete.");
+            return;
+        }
+
         for (int i = 0; i < members.size(); i++) {
 
             if (members.get(i).getMemberId() == memberId) {
