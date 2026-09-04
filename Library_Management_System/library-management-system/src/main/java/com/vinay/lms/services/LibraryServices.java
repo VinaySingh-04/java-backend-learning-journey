@@ -28,8 +28,24 @@ public class LibraryServices {
 
         System.out.println("\n========== Add New Book ==========");
 
+
+
         System.out.print("Enter Book ID: ");
         int bookId = scanner.nextInt();
+
+        boolean exists  = false;
+        for (Book book : books){
+            if(book.getBookId() == bookId){
+                exists = true;
+                break;
+            }
+        }
+
+        if(exists){
+            System.out.println("Book ID is already exists.");
+            return;
+        }
+
         if(bookId <= 0){
             System.out.println("Book ID should be greater than 0.");
             return;
@@ -221,6 +237,21 @@ public class LibraryServices {
 
         System.out.print("Enter Member ID: ");
         int memberId = scanner.nextInt();
+
+        boolean exists = false;
+
+        for(Member member : members){
+            if(member.getMemberId() == memberId){
+                exists = true;
+                break;
+            }
+        }
+
+        if(exists){
+            System.out.println("Member ID already exists.");
+            return;
+        }
+
         scanner.nextLine();
 
         System.out.print("Enter Name: ");
