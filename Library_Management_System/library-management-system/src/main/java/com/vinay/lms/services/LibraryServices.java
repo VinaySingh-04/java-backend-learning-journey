@@ -112,7 +112,7 @@ public class LibraryServices {
         }
     }
 
-    public void searchBook(Scanner scanner) {
+    public void searchBookById(Scanner scanner) {
         if(books.isEmpty()){
             System.out.println("\nNo Books Available");
             return;
@@ -134,27 +134,28 @@ public class LibraryServices {
         }
     }
 
-    public void searchBookByTitle(Scanner scanner){
+    public void searchBook(Scanner scanner){
         System.out.println("\n===== Search Book By Title =====");
 
-        System.out.print("Enter Book Title: ");
-        String title = scanner.nextLine().toLowerCase();
+        System.out.print("Enter book title, author, or category: ");
+        String word = scanner.nextLine().toLowerCase();
 
-        boolean   FoundBook = false;
+        boolean   foundBook = false;
 
         for (Book book : books){
-            if(book.getTitle().toLowerCase().contains(title)){
+            if(book.getTitle().toLowerCase().contains(word)
+                    || book.getAuthor().toLowerCase().contains(word)
+                    || book.getCategory().toLowerCase().contains(word)) {
 
                 System.out.println("\nBook Found!");
                 System.out.println(book);
 
-                FoundBook = true;
-                break;
+                foundBook = true;
 
             }
         }
 
-        if(!FoundBook){
+        if(!foundBook){
             System.out.println("\nBook Not Found.");
         }
     }
@@ -324,7 +325,6 @@ public class LibraryServices {
 
     public void searchMemberByName(Scanner scanner){
         System.out.println("\n===== Search Member By Name =====");
-        scanner.nextInt();
         System.out.print("Enter Member Name: ");
         String name = scanner.nextLine().toLowerCase();
 

@@ -18,7 +18,7 @@ public class Main {
            System.out.println("1. Add Book");
            System.out.println("2. View All Books");
            System.out.println("3. Search Book By Id");
-           System.out.println("4. Search Book By Title");
+           System.out.println("4. Search Book ");
            System.out.println("5. Update Book");
            System.out.println("6. Delete Book");
            System.out.println();
@@ -43,6 +43,7 @@ public class Main {
            System.out.print("Enter your choice: ");
 
            int choice = scanner.nextInt();
+           scanner.nextLine();
 
            switch(choice){
                case 0:
@@ -58,11 +59,11 @@ public class Main {
                    break;
 
                case 3:
-                   service.searchBook(scanner);
+                   service.searchBookById(scanner);
                    break;
 
                case 4:
-                   service.searchBookByTitle(scanner);
+                   service.searchBook(scanner);
                    break;
 
                case 5:
