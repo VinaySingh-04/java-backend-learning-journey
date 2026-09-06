@@ -3,6 +3,7 @@ package com.vinay.lms.main;
 import com.vinay.lms.model.Book;
 import com.vinay.lms.services.LibraryServices;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -42,102 +43,108 @@ public class Main {
            System.out.println("21. Exit");
            System.out.print("Enter your choice: ");
 
-           int choice = scanner.nextInt();
-           scanner.nextLine();
 
-           switch(choice){
-               case 0:
-                   service.showDashBoard();
-                   break;
+           try {
+               int choice = scanner.nextInt();
+               scanner.nextLine();
+               switch(choice){
+                   case 0:
+                       service.showDashBoard();
+                       break;
 
-               case 1:
-                   service.addBook(scanner);
-                   break;
+                   case 1:
+                       service.addBook(scanner);
+                       break;
 
-               case 2:
-                  service.viewBooks();
-                   break;
+                   case 2:
+                       service.viewBooks();
+                       break;
 
-               case 3:
-                   service.searchBookById(scanner);
-                   break;
+                   case 3:
+                       service.searchBookById(scanner);
+                       break;
 
-               case 4:
-                   service.searchBook(scanner);
-                   break;
+                   case 4:
+                       service.searchBook(scanner);
+                       break;
 
-               case 5:
-                   service.updateBook(scanner);
-                   break;
+                   case 5:
+                       service.updateBook(scanner);
+                       break;
 
-               case 6:
-                   service.deleteBook(scanner);
-                   break;
+                   case 6:
+                       service.deleteBook(scanner);
+                       break;
 
-               case 7:
-                  service.registerMember(scanner);
-                  break;
+                   case 7:
+                       service.registerMember(scanner);
+                       break;
 
-               case 8:
-                   service.viewAllMember();
-                   break;
+                   case 8:
+                       service.viewAllMember();
+                       break;
 
-               case 9:
-                   service.searchMemberById(scanner);
-                   break;
+                   case 9:
+                       service.searchMemberById(scanner);
+                       break;
 
-               case 10:
-                   service.searchMemberByName(scanner);
-                   break;
+                   case 10:
+                       service.searchMemberByName(scanner);
+                       break;
 
-               case 11:
-                   service.updateMember(scanner);
-                   break;
+                   case 11:
+                       service.updateMember(scanner);
+                       break;
 
-               case 12:
-                   service.deleteMember(scanner);
-                   break;
+                   case 12:
+                       service.deleteMember(scanner);
+                       break;
 
-               case 13:
-                   service.issueBook(scanner);
-                   break;
+                   case 13:
+                       service.issueBook(scanner);
+                       break;
 
-               case 14:
-                   service.viewIssuedBook();
-                   break;
+                   case 14:
+                       service.viewIssuedBook();
+                       break;
 
-               case 15:
-                   service.searchIssuedBookById(scanner);
-                   break;
+                   case 15:
+                       service.searchIssuedBookById(scanner);
+                       break;
 
-               case 16:
-                   service.returnBook(scanner);
-                   break;
+                   case 16:
+                       service.returnBook(scanner);
+                       break;
 
-               case 17:
-                   service.showOverdueBooks();
-                   break;
+                   case 17:
+                       service.showOverdueBooks();
+                       break;
 
-               case 18:
-                   service.showRemainingDays();
-                   break;
+                   case 18:
+                       service.showRemainingDays();
+                       break;
 
-               case 19:
-                   service.showFineReports();
-                   break;
+                   case 19:
+                       service.showFineReports();
+                       break;
 
-               case 20:
-                   service.showTotalfine();
-                   break;
+                   case 20:
+                       service.showTotalfine();
+                       break;
 
-               case 21:
-                   System.out.println("Thank you for using Library Management System!");
-                   scanner.close();
-                   return;
+                   case 21:
+                       System.out.println("Thank you for using Library Management System!");
+                       scanner.close();
+                       return;
 
-               default:
-                   System.out.println("Invalid choice. Please try again.");
+                   default:
+                       System.out.println("Invalid choice. Please try again.");
+               }
+           }catch (InputMismatchException e){
+               System.out.println("please enter a valid choice");
+               scanner.nextLine();
            }
+
        }
     }
 

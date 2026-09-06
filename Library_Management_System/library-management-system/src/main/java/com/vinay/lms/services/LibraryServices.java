@@ -9,6 +9,7 @@ import com.vinay.lms.util.fileUtil;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LibraryServices {
@@ -27,77 +28,80 @@ public class LibraryServices {
     public void addBook(Scanner scanner) {
 
         System.out.println("\n========== Add New Book ==========");
-
-
-
         System.out.print("Enter Book ID: ");
-        int bookId = scanner.nextInt();
 
-        boolean exists  = false;
-        for (Book book : books){
-            if(book.getBookId() == bookId){
-                exists = true;
-                break;
+            int bookId = scanner.nextInt();
+            scanner.nextLine();
+
+            boolean exists = false;
+            for (Book book : books) {
+                if (book.getBookId() == bookId) {
+                    exists = true;
+                    break;
+                }
             }
-        }
 
-        if(exists){
-            System.out.println("Book ID is already exists.");
-            return;
-        }
+            if (exists) {
+                System.out.println("Book ID is already exists.");
+                return;
+            }
 
-        if(bookId <= 0){
-            System.out.println("Book ID should be greater than 0.");
-            return;
-        }
-        scanner.nextLine();
+            if (bookId <= 0) {
+                System.out.println("Book ID should be greater than 0.");
+                return;
+            }
 
-        System.out.print("Enter Title: ");
-        String title = scanner.nextLine();
-        if(title.trim().isEmpty()){
-            System.out.println("Title should not be empty.");
-            return;
-        }
 
-        System.out.print("Enter Author: ");
-        String author = scanner.nextLine();
-        if(author.trim().isEmpty()){
-            System.out.println("Author should not be empty.");
-            return;
-        }
+            System.out.print("Enter Title: ");
+            String title = scanner.nextLine();
+            if (title.trim().isEmpty()) {
+                System.out.println("Title should not be empty.");
+                return;
+            }
 
-        System.out.print("Enter Category: ");
-        String category = scanner.nextLine();
-        if(category.trim().isEmpty()){
-            System.out.println("Category should not be empty.");
-            return;
-        }
+            System.out.print("Enter Author: ");
+            String author = scanner.nextLine();
+            if (author.trim().isEmpty()) {
+                System.out.println("Author should not be empty.");
+                return;
+            }
 
-        System.out.print("Enter Price: ");
-        double price = scanner.nextDouble();
-        if(price <= 0){
-            System.out.println("Price should be greater than 0.");
-            return;
-        }
+            System.out.print("Enter Category: ");
+            String category = scanner.nextLine();
+            if (category.trim().isEmpty()) {
+                System.out.println("Category should not be empty.");
+                return;
+            }
 
-        System.out.print("Enter Quantity: ");
-        int quantity = scanner.nextInt();
-        scanner.nextLine();
-        if(quantity < 0){
-            System.out.println("Quantity should be greater than 0.");
-            return;
-        }
+            System.out.print("Enter Price: ");
+            double price = scanner.nextDouble();
+            if (price <= 0) {
+                System.out.println("Price should be greater than 0.");
+                return;
+            }
 
-        Book book = new Book(bookId,title,author,category,price,quantity);
-        books.add(book);
+            System.out.print("Enter Quantity: ");
+            int quantity = scanner.nextInt();
+            scanner.nextLine();
 
-        System.out.println("\n No books available in the library.");
+            if (quantity <= 0) {
+                System.out.println("Quantity should be greater than 0.");
+                return;
+            }
 
-        System.out.println(book);
+           title = title.trim();
+           author = author.trim();
+           category = category.trim();
 
-        fileUtil.saveBook(books);
+            Book book = new Book(bookId, title, author, category, price, quantity);
+            books.add(book);
 
-        System.out.println("\nTotal Books : " + books.size());
+            System.out.println(book);
+
+            fileUtil.saveBook(books);
+
+            System.out.println("\nTotal Books : " + books.size());
+
     }
 
     public void viewBooks() {
@@ -132,13 +136,17 @@ public class LibraryServices {
                 break;
             }
         }
+
+        if(!found){
+            System.out.println("\nBook Not Found.");
+        }
     }
 
     public void searchBook(Scanner scanner){
         System.out.println("\n===== Search Book By Title =====");
 
         System.out.print("Enter book title, author, or category: ");
-        String word = scanner.nextLine().toLowerCase();
+        String word = scanner.nextLine().trim().toLowerCase();
 
         boolean   foundBook = false;
 
@@ -160,45 +168,84 @@ public class LibraryServices {
         }
     }
 
-    public void updateBook(Scanner scanner) {
-        if(books.isEmpty()){
-            System.out.println("\nNo Books Available");
-            return;
-        }
 
-        System.out.println("\nEnter Book Id to update :");
-        int updateId = scanner.nextInt();
+    public void updateBook(Scanner scanner) {
+
+        System.out.println("\n========== Update Book ==========");
+
+        System.out.print("Enter Book ID: ");
+        int bookId = scanner.nextInt();
         scanner.nextLine();
 
-        for(Book book : books){
-            if(book.getBookId() == updateId){
-                System.out.println("Enter new Title: ");
-                book.setTitle(scanner.nextLine());
+        boolean found = false;
 
-                System.out.println("Enter new Author");
-                book.setAuthor(scanner.nextLine());
+        for (Book book : books) {
 
-                System.out.println("Enter new Category");
-                book.setCategory(scanner.nextLine());
+            if (book.getBookId() == bookId) {
 
-                System.out.println("Enter new Price");
-                book.setPrice(scanner.nextDouble());
+                found = true;
+
+                System.out.print("Enter New Title: ");
+                String title = scanner.nextLine().trim();
+
+                if (title.isEmpty()) {
+                    System.out.println("Title cannot be empty.");
+                    return;
+                }
+
+                System.out.print("Enter New Author: ");
+                String author = scanner.nextLine().trim();
+
+                if (author.isEmpty()) {
+                    System.out.println("Author cannot be empty.");
+                    return;
+                }
+
+                System.out.print("Enter New Category: ");
+                String category = scanner.nextLine().trim();
+
+                if (category.isEmpty()) {
+                    System.out.println("Category cannot be empty.");
+                    return;
+                }
+
+                System.out.print("Enter New Price: ");
+                double price = scanner.nextDouble();
+
+                if (price <= 0) {
+                    System.out.println("Price must be greater than 0.");
+                    return;
+                }
+
+                System.out.print("Enter New Quantity: ");
+                int quantity = scanner.nextInt();
                 scanner.nextLine();
 
-                System.out.println("Enter new Quantity");
-                book.setQuantity(scanner.nextInt());
-                scanner.nextLine();
+                if (quantity < 0) {
+                    System.out.println("Quantity cannot be negative.");
+                    return;
+                }
 
-                System.out.println("\n✅ Book Updated Successfully!");
+                book.setTitle(title);
+                book.setAuthor(author);
+                book.setCategory(category);
+                book.setPrice(price);
+                book.setQuantity(quantity);
 
-                 fileUtil.saveBook(books);
+                fileUtil.saveBook(books);
 
+                System.out.println("\nBook updated successfully!");
                 System.out.println(book);
-                return;
+
+                break;
             }
         }
-        System.out.println("\n Book Not Found.");
+
+        if (!found) {
+            System.out.println("\nBook Not Found.");
+        }
     }
+
 
     public void deleteBook(Scanner scanner) {
 
@@ -360,10 +407,6 @@ public class LibraryServices {
         for (Member member : members) {
 
             if (member.getMemberId() == memberId) {
-
-                System.out.println("Enter new Id");
-                int id = scanner.nextInt();
-                scanner.nextLine();
 
                 System.out.print("Enter New Name: ");
                 String name = scanner.nextLine();
@@ -700,7 +743,7 @@ public class LibraryServices {
         if(!returnDate.isAfter(dueDate)){
             return 0;
         }
-        long lateDays = ChronoUnit.DAYS.between(returnDate,dueDate);
+        long lateDays = ChronoUnit.DAYS.between(dueDate,returnDate);
         double finePerDays = 10 ;
         return lateDays * finePerDays;
     }
