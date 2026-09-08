@@ -147,6 +147,10 @@ public class LibraryServices {
 
         System.out.print("Enter book title, author, or category: ");
         String word = scanner.nextLine().trim().toLowerCase();
+        if (word.isEmpty()) {
+            System.out.println("Search keyword cannot be empty.");
+            return;
+        }
 
         boolean   foundBook = false;
 
@@ -316,17 +320,38 @@ public class LibraryServices {
 
         scanner.nextLine();
 
+        if(memberId <= 0){
+            System.out.println("Member ID should be greater than 0.");
+            return;
+        }
+
         System.out.print("Enter Name: ");
-        String name = scanner.nextLine();
+        String name = scanner.nextLine().trim();
+        if(name.isEmpty()){
+            System.out.println("Name cannot be empty.");
+            return;
+        }
 
         System.out.print("Enter Phone: ");
-        String phone = scanner.nextLine();
+        String phone = scanner.nextLine().trim();
+        if(phone.isEmpty()){
+            System.out.println("Phone cannot be empty.");
+            return;
+        }
 
         System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
+        String email = scanner.nextLine().trim();
+        if(email.isEmpty()){
+            System.out.println("Email cannot be empty.");
+            return;
+        }
 
         System.out.print("Enter Address: ");
-        String address = scanner.nextLine();
+        String address = scanner.nextLine().trim();
+        if(address.isEmpty()){
+            System.out.println("Address cannot be empty.");
+            return;
+        }
 
         Member member = new Member(memberId,name,phone,email,address);
         members.add(member);
@@ -335,7 +360,7 @@ public class LibraryServices {
 
     }
 
-    public void viewAllMember(){
+    public void viewAllMembers(){
         if (members.isEmpty()) {
             System.out.println("No members registered.");
             return;
@@ -409,16 +434,32 @@ public class LibraryServices {
             if (member.getMemberId() == memberId) {
 
                 System.out.print("Enter New Name: ");
-                String name = scanner.nextLine();
+                String name = scanner.nextLine().trim();
+                if(name.isEmpty()){
+                    System.out.println("Name cannot be empty.");
+                    return;
+                }
 
                 System.out.print("Enter New Phone: ");
-                String phone = scanner.nextLine();
+                String phone = scanner.nextLine().trim();
+                if(phone.isEmpty()){
+                    System.out.println("phone Number cannot be empty.");
+                    return;
+                }
 
                 System.out.print("Enter New Email: ");
-                String email = scanner.nextLine();
+                String email = scanner.nextLine().trim();
+                if(email.isEmpty()){
+                    System.out.println("Email cannot be empty.");
+                    return;
+                }
 
                 System.out.print("Enter New Address: ");
-                String address = scanner.nextLine();
+                String address = scanner.nextLine().trim();
+                if(address.isEmpty()){
+                    System.out.println("Name cannot be empty.");
+                    return;
+                }
 
                 member.setName(name);
                 member.setPhone(phone);
@@ -436,6 +477,11 @@ public class LibraryServices {
       }
 
     public void deleteMember(Scanner scanner) {
+
+        if(members.isEmpty()){
+            System.out.println("No members registered.");
+            return;
+        }
 
         System.out.println("\n===== Delete Member =====");
 
@@ -1027,7 +1073,7 @@ public class LibraryServices {
         }
     }
 
-    public void showTotalfine() {
+    public void showTotalFine() {
 
         if (issueBooks.isEmpty()) {
             System.out.println("There is no issue books.");

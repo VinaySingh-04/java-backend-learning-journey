@@ -13,7 +13,7 @@ public class Member {
         this.phone = phone;
         this.email = email;
         this.address = address;
-    };
+    }
 
     public int getMemberId() {
         return memberId;

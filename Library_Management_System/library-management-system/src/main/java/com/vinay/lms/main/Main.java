@@ -81,7 +81,7 @@ public class Main {
                        break;
 
                    case 8:
-                       service.viewAllMember();
+                       service.viewAllMembers();
                        break;
 
                    case 9:
@@ -129,7 +129,7 @@ public class Main {
                        break;
 
                    case 20:
-                       service.showTotalfine();
+                       service.showTotalFine();
                        break;
 
                    case 21:

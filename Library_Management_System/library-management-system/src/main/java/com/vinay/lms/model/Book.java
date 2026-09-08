@@ -56,7 +56,7 @@ public class Book {
     }
 
     public void setPrice(double price) {
-        if(price >= 0){
+        if(price > 0){
             this.price = price;
         }
 
@@ -67,7 +67,9 @@ public class Book {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        if (quantity >= 0) {
+            this.quantity = quantity;
+        }
     }
 
     @Override
