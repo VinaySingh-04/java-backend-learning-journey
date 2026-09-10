@@ -42,25 +42,36 @@ public class fileUtil {
 
             while (line != null) {
 
-                String[] data = line.split(",");
+                try {
 
-                int id = Integer.parseInt(data[0]);
-                String title = data[1];
-                String author = data[2];
-                String category = data[3];
-                double price = Double.parseDouble(data[4]);
-                int quantity = Integer.parseInt(data[5]);
+                    String[] data = line.split(",");
 
-                Book book = new Book(
-                        id,
-                        title,
-                        author,
-                        category,
-                        price,
-                        quantity
-                );
+                    int id = Integer.parseInt(data[0]);
+                    String title = data[1];
+                    String author = data[2];
+                    String category = data[3];
+                    double price = Double.parseDouble(data[4]);
+                    int quantity = Integer.parseInt(data[5]);
 
-                books.add(book);
+                    Book book = new Book(
+                            id,
+                            title,
+                            author,
+                            category,
+                            price,
+                            quantity
+                    );
+
+                    books.add(book);
+
+                } catch (NumberFormatException e) {
+
+                    System.out.println("Invalid number format in books.txt: " + line);
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+
+                    System.out.println("Invalid book data in books.txt: " + line);
+                }
 
                 line = reader.readLine();
             }
