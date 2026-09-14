@@ -81,11 +81,16 @@ public class LibraryServices {
             }
 
             System.out.print("Enter Price: ");
-            double price = scanner.nextDouble();
-            if (price <= 0) {
-                System.out.println("Price should be greater than 0.");
-                return;
-            }
+            double price;
+
+            try {
+               price = scanner.nextDouble();
+               scanner.nextLine();
+            } catch (InputMismatchException e) {
+                 System.out.println("Invalid Book Price. Please enter a number.");
+                 scanner.nextLine();
+                  return;
+           }
 
             System.out.print("Enter Quantity: ");
             int quantity = scanner.nextInt();
