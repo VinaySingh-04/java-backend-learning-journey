@@ -110,34 +110,52 @@ public class fileUtil {
     }
 
     public static void loadMember(List<Member> members){
-        try(
-            BufferedReader reader = new BufferedReader(new FileReader("members.txt")))
-        { String line ;
+        try (BufferedReader reader = new BufferedReader(new FileReader("members.txt"))) {
+
+            String line;
+
             while((line = reader.readLine()) != null){
-                String[] data = line.split(",");
-                int id = Integer.parseInt(data[0]);
-                String name = data[1];
-                String phone = data[2];
-                String email = data[3];
-                String address = data[4];
 
-                Member member = new Member(id,name ,phone,email,address);
-                members.add(member);
+                try {
 
+                    String[] data = line.split(",");
+
+                    int id = Integer.parseInt(data[0]);
+                    String name = data[1];
+                    String phone = data[2];
+                    String email = data[3];
+                    String address = data[4];
+
+                    Member member = new Member(
+                            id,
+                            name,
+                            phone,
+                            email,
+                            address
+                    );
+
+                    members.add(member);
+
+                } catch (NumberFormatException e) {
+
+                    System.out.println(
+                            "Invalid number format in members.txt: " + line
+                    );
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+
+                    System.out.println(
+                            "Invalid member data in members.txt: " + line
+                    );
+                }
             }
 
+        } catch (IOException e) {
 
-        }catch (IOException e) {
             System.out.println("Error while loading Members.");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format in members.txt.");
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Invalid member data in members.txt.");
         }
-
     }
+
 
     public static void saveIssuedBooks(List<IssueBook> issuedBooks){
 
