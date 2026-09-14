@@ -87,14 +87,26 @@ public class LibraryServices {
                price = scanner.nextDouble();
                scanner.nextLine();
             } catch (InputMismatchException e) {
-                 System.out.println("Invalid Book Price. Please enter a number.");
-                 scanner.nextLine();
-                  return;
-           }
+                System.out.println("Invalid Book Price. Please enter a number.");
+                scanner.nextLine();
+               return;
+        }
+            if (price <= 0) {
+                System.out.println("Price should be greater than 0.");
+                return;
+            }
 
             System.out.print("Enter Quantity: ");
-            int quantity = scanner.nextInt();
-            scanner.nextLine();
+            int quantity;
+
+            try {
+               quantity = scanner.nextInt();
+               scanner.nextLine();
+            } catch (InputMismatchException e) {
+               System.out.println("Invalid Book Quantity. Please enter a number.");
+               scanner.nextLine();
+               return;
+          }
 
             if (quantity <= 0) {
                 System.out.println("Quantity should be greater than 0.");
