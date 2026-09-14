@@ -182,59 +182,72 @@ public class fileUtil {
         }
     }
 
-    public static  void loadIssuedBooks(List<IssueBook> issuedBooks){
 
-        try(
-            BufferedReader reader  = new BufferedReader(new FileReader("IssuedBooks.txt")))
-        {
-            String line ;
-            while((line = reader.readLine()) != null){
-                String[] data = line.split(",");
-                int issueId = Integer.parseInt(data[0]);
-                int memberId = Integer.parseInt(data[1]);
-                int bookId = Integer.parseInt(data[2]);
+    public static void loadIssuedBooks(List<IssueBook> issuedBooks) {
 
-                LocalDate issueDate = LocalDate.parse(data[3]);
-                LocalDate dueDate = LocalDate.parse(data[4]);
+        try (BufferedReader reader =
+                     new BufferedReader(new FileReader("IssuedBooks.txt"))) {
 
+            String line;
 
-                LocalDate returnDate = null;
+            while ((line = reader.readLine()) != null) {
 
-                if (!data[5].equals("null")) {
-                    returnDate = LocalDate.parse(data[5]);
+                try {
+
+                    String[] data = line.split(",");
+
+                    int issueId = Integer.parseInt(data[0]);
+                    int memberId = Integer.parseInt(data[1]);
+                    int bookId = Integer.parseInt(data[2]);
+
+                    LocalDate issueDate = LocalDate.parse(data[3]);
+                    LocalDate dueDate = LocalDate.parse(data[4]);
+
+                    LocalDate returnDate = null;
+
+                    if (!data[5].equals("null")) {
+                        returnDate = LocalDate.parse(data[5]);
+                    }
+
+                    boolean returned = Boolean.parseBoolean(data[6]);
+                    double fine = Double.parseDouble(data[7]);
+
+                    IssueBook issueBook = new IssueBook(
+                            issueId,
+                            memberId,
+                            bookId,
+                            issueDate,
+                            dueDate,
+                            returnDate,
+                            returned,
+                            fine
+                    );
+
+                    issuedBooks.add(issueBook);
+
+                } catch (NumberFormatException e) {
+
+                    System.out.println(
+                            "Invalid number format in IssuedBooks.txt: " + line
+                    );
+
+                } catch (ArrayIndexOutOfBoundsException e) {
+
+                    System.out.println(
+                            "Invalid issued book data in IssuedBooks.txt: " + line
+                    );
+
+                } catch (DateTimeParseException e) {
+
+                    System.out.println(
+                            "Invalid date format in IssuedBooks.txt: " + line
+                    );
                 }
-
-
-                boolean returned = Boolean.parseBoolean(data[6]);
-
-                double fine = Double.parseDouble(data[7]);
-
-                IssueBook issueBook = new IssueBook(
-                        issueId,
-                        memberId,
-                        bookId,
-                        issueDate,
-                        dueDate,
-                        returnDate,
-                        returned,
-                        fine
-                );
-
-                issuedBooks.add(issueBook);
             }
-            System.out.println("Issued Books loaded successfully");
+
         } catch (IOException e) {
+
             System.out.println("Error while loading issued books.");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format in IssuedBooks.txt.");
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Invalid issued book data in IssuedBooks.txt.");
-
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid date format in IssuedBooks.txt.");
-
         }
     }
 }
