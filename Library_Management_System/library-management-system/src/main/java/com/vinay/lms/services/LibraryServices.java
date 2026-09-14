@@ -30,8 +30,15 @@ public class LibraryServices {
         System.out.println("\n========== Add New Book ==========");
         System.out.print("Enter Book ID: ");
 
-            int bookId = scanner.nextInt();
-            scanner.nextLine();
+            int bookId ;
+            try{
+                bookId = scanner.nextInt();
+                scanner.nextLine();
+            }catch(InputMismatchException e){
+                System.out.println("Invalid Book ID. Please enter a number.");
+                scanner.nextLine();
+                return;
+            }
 
             boolean exists = false;
             for (Book book : books) {
