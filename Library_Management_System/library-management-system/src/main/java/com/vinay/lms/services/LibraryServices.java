@@ -202,8 +202,16 @@ public class LibraryServices {
         System.out.println("\n========== Update Book ==========");
 
         System.out.print("Enter Book ID: ");
-        int bookId = scanner.nextInt();
-        scanner.nextLine();
+
+        int bookId ;
+        try {
+            bookId = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid Book ID. Please enter a number.");
+            scanner.nextLine();
+            return;
+        }
 
         boolean found = false;
 
@@ -238,7 +246,15 @@ public class LibraryServices {
                 }
 
                 System.out.print("Enter New Price: ");
-                double price = scanner.nextDouble();
+                double price ;
+                try {
+                    price = scanner.nextDouble();
+                    scanner.nextLine();
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid Book Price. Please enter a number.");
+                    scanner.nextLine();
+                    return;
+                }
 
                 if (price <= 0) {
                     System.out.println("Price must be greater than 0.");
@@ -246,8 +262,17 @@ public class LibraryServices {
                 }
 
                 System.out.print("Enter New Quantity: ");
-                int quantity = scanner.nextInt();
-                scanner.nextLine();
+                int quantity ;
+
+                try {
+                    quantity = scanner.nextInt();
+                    scanner.nextLine();
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid Book Quantity. Please enter a number.");
+                    scanner.nextLine();
+                    return;
+                }
+
 
                 if (quantity < 0) {
                     System.out.println("Quantity cannot be negative.");
