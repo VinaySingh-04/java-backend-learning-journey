@@ -4,12 +4,14 @@ package com.vinay.lms.services;
 import com.vinay.lms.model.Book;
 import com.vinay.lms.model.IssueBook;
 import com.vinay.lms.model.Member;
-import com.vinay.lms.util.fileUtil;
+import com.vinay.lms.util.FileUtil;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class LibraryServices {
@@ -20,9 +22,9 @@ public class LibraryServices {
 
 
     public LibraryServices(){
-        fileUtil.loadFile(books);
-        fileUtil.loadMember(members);
-        fileUtil.loadIssuedBooks(issueBooks);
+        loadBooks();
+        loadMembers();
+        loadIssuedBooks();
       }
 
     public void addBook(Scanner scanner) {
@@ -122,7 +124,7 @@ public class LibraryServices {
 
             System.out.println(book);
 
-            fileUtil.saveBook(books);
+            saveBooks();
 
             System.out.println("\nTotal Books : " + books.size());
 
@@ -292,7 +294,7 @@ public class LibraryServices {
                 book.setPrice(price);
                 book.setQuantity(quantity);
 
-                fileUtil.saveBook(books);
+               saveBooks();
 
                 System.out.println("\nBook updated successfully!");
                 System.out.println(book);
@@ -325,13 +327,18 @@ public class LibraryServices {
             return;
         }
 
-        Book booktoDelete = null;
+        Book bookToDelete = null;
 
         for (Book book : books){
             if(book.getBookId() == deletedId){
-                booktoDelete = book;
+                bookToDelete = book;
                 break;
             }
+        }
+
+        if (bookToDelete == null) {
+            System.out.println("Book Not Found!");
+            return;
         }
 
         boolean isIssued = false;
@@ -347,17 +354,64 @@ public class LibraryServices {
             return;
         }
 
-        if(booktoDelete != null){
+        if(bookToDelete != null){
 
-            books.remove(booktoDelete);
+            books.remove(bookToDelete);
 
-            fileUtil.saveBook(books);
+           saveBooks();
+
             System.out.println("\nBook Deleted Successfully");
         }else{
             System.out.println("Book Not Found!");
         }
       }
 
+
+      private void loadBooks(){
+        List<String> lines = FileUtil.readLines("Books.txt");
+
+        for(String line : lines){
+            try{
+                String[] data = line.split(",");
+
+                int bookId = Integer.parseInt(data[0]);
+                String title = data[1];
+                String author = data[2];
+                String category = data[3];
+                double price = Double.parseDouble(data[4]);
+                int quantity = Integer.parseInt(data[5]);
+
+                Book book = new Book(
+                        bookId,
+                        title,
+                        author,
+                        category,
+                        price,
+                        quantity
+                );
+
+                books.add(book);
+            }catch(NumberFormatException | ArrayIndexOutOfBoundsException e){
+                System.out.println("Skipping invalid book record: " + line);
+            }
+        }
+      }
+
+      private void saveBooks(){
+        List<String> lines = new ArrayList<>();
+
+        for(Book book : books){
+            String line =   book.getBookId() + "," +
+                    book.getTitle() + "," +
+                    book.getAuthor() + "," +
+                    book.getCategory() + "," +
+                    book.getPrice() + "," +
+                    book.getQuantity();
+
+            lines.add(line);
+        }
+        FileUtil.writeLines("books.txt",lines);
+      }
 
       //Memebers
 
@@ -425,7 +479,7 @@ public class LibraryServices {
 
         Member member = new Member(memberId,name,phone,email,address);
         members.add(member);
-        fileUtil.saveMember(members);
+        saveMembers();
         System.out.println("Member Registered Successfully!");
 
     }
@@ -555,7 +609,7 @@ public class LibraryServices {
                 member.setEmail(email);
                 member.setAddress(address);
 
-                fileUtil.saveMember(members);
+                saveMembers();
 
                 System.out.println("Member Updated Successfully!");
                 return;
@@ -616,7 +670,7 @@ public class LibraryServices {
             if (members.get(i).getMemberId() == memberId) {
 
                 members.remove(i);
-                fileUtil.saveMember(members);
+                saveMembers();
 
                 System.out.println("Member Deleted Successfully!");
 
@@ -628,6 +682,48 @@ public class LibraryServices {
     }
 
 
+    private void loadMembers(){
+        List<String> lines = FileUtil.readLines("members.txt");
+
+        for(String line : lines){
+            try{
+                String[] data = line.split(",");
+
+                int memberId = Integer.parseInt(data[0]);
+                String name = data[1];
+                String phone = data[2];
+                String email = data[3];
+                String address = data[4];
+
+                Member member = new Member(
+                        memberId,
+                        name,
+                        phone,
+                        email,
+                        address
+                );
+
+                members.add(member);
+            }catch (NumberFormatException | ArrayIndexOutOfBoundsException e){
+                System.out.println("Skipping invalid member record: " + line);
+            }
+        }
+    }
+
+    private void saveMembers(){
+        List<String> lines = new ArrayList<>();
+
+        for(Member member : members){
+            String line =  member.getMemberId() + "," +
+                    member.getName() + "," +
+                    member.getPhone() + "," +
+                    member.getEmail() + "," +
+                    member.getAddress();
+
+            lines.add(line);
+        }
+        FileUtil.writeLines("members.txt", lines);
+    }
     //issueBook
 
     public void issueBook(Scanner scanner) {
@@ -716,10 +812,10 @@ public class LibraryServices {
         );
 
         issueBooks.add(issueBook);
-        fileUtil.saveIssuedBooks(issueBooks);
+        saveIssuedBooks();
 
         foundBook.setQuantity(foundBook.getQuantity()-1);
-        fileUtil.saveBook(books);
+        saveBooks();
 
         System.out.println("\nBook Issued Successfully!");
         System.out.println(issueBook);
@@ -828,8 +924,8 @@ public class LibraryServices {
         foundIssue.setReturnDate(returnDate);
         foundIssue.setFine(fine);
         foundIssue.setReturned(true);
-        fileUtil.saveBook(books);
-        fileUtil.saveIssuedBooks(issueBooks);
+        saveBooks();
+        saveIssuedBooks();
         System.out.println("\n===== Return Summary =====");
 
         System.out.println("Book Title : " + foundBook.getTitle());
@@ -1229,5 +1325,73 @@ public class LibraryServices {
         }
 
         System.out.println("Total Fine : ₹" + totalFine);
+    }
+
+    private void loadIssuedBooks(){
+        List<String> lines = FileUtil.readLines("issueBooks.txt");
+
+        for(String line : lines){
+
+            try{
+                String[] data = line.split(",");
+
+                int issueId = Integer.parseInt(data[0]);
+                int memberId = Integer.parseInt(data[1]);
+                int bookId = Integer.parseInt(data[2]);
+
+                LocalDate issueDate = LocalDate.parse(data[3]);
+                LocalDate dueDate = LocalDate.parse(data[4]);
+
+                LocalDate returnDate = null;
+
+                if (!data[5].equals("null")) {
+                    returnDate = LocalDate.parse(data[5]);
+                }
+
+                boolean returned = Boolean.parseBoolean(data[6]);
+                double fine = Double.parseDouble(data[7]);
+
+                IssueBook issueBook = new IssueBook(
+                        issueId,
+                        memberId,
+                        bookId,
+                        issueDate,
+                        dueDate,
+                        returnDate,
+                        returned,
+                        fine
+                );
+
+                issueBooks.add(issueBook);
+            }catch(NumberFormatException | ArrayIndexOutOfBoundsException | DateTimeParseException e) {
+
+                System.out.println("Skipping invalid issued book record: " + line);
+            }
+        }
+    }
+
+    private void saveIssuedBooks(){
+        List<String> lines = new ArrayList<>();
+
+        for (IssueBook issueBook : issueBooks) {
+
+            String returnDate = issueBook.getReturnDate() == null
+                    ? "null"
+                    : issueBook.getReturnDate().toString();
+
+            String line =
+                    issueBook.getIssueId() + "," +
+                            issueBook.getMemberId() + "," +
+                            issueBook.getBookId() + "," +
+                            issueBook.getIssueDate() + "," +
+                            issueBook.getDueDate() + "," +
+                            returnDate + "," +
+                            issueBook.isReturned() + "," +
+                            issueBook.getFine();
+
+            lines.add(line);
+        }
+
+        FileUtil.writeLines("issuedBooks.txt", lines);
     }
 }
