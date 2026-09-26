@@ -5,20 +5,20 @@ import com.vinay.lms.model.Book;
 import com.vinay.lms.model.IssueBook;
 import com.vinay.lms.model.Member;
 import com.vinay.lms.util.FileUtil;
+import com.vinay.lms.util.InputUtil;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class LibraryServices {
 
-    private ArrayList<Book> books = new ArrayList<>();
-    private ArrayList<Member> members = new ArrayList<>();
-    private ArrayList<IssueBook> issueBooks = new ArrayList<>();
+    private List<Book> books = new ArrayList<>();
+    private List<Member> members = new ArrayList<>();
+    private List<IssueBook> issueBooks = new ArrayList<>();
+
+    private static final double FINE_PER_DAY = 10;
 
 
     public LibraryServices(){
@@ -30,17 +30,8 @@ public class LibraryServices {
     public void addBook(Scanner scanner) {
 
         System.out.println("\n========== Add New Book ==========");
-        System.out.print("Enter Book ID: ");
 
-            int bookId ;
-            try{
-                bookId = scanner.nextInt();
-                scanner.nextLine();
-            }catch(InputMismatchException e){
-                System.out.println("Invalid Book ID. Please enter a number.");
-                scanner.nextLine();
-                return;
-            }
+           int bookId = InputUtil.readInt(scanner,"Enter Book Id");
 
             boolean exists = false;
             for (Book book : books) {
@@ -51,7 +42,7 @@ public class LibraryServices {
             }
 
             if (exists) {
-                System.out.println("Book ID is already exists.");
+                System.out.println("Book ID already exists.");
                 return;
             }
 
@@ -61,63 +52,25 @@ public class LibraryServices {
             }
 
 
-            System.out.print("Enter Title: ");
-            String title = scanner.nextLine();
-            if (title.trim().isEmpty()) {
-                System.out.println("Title should not be empty.");
-                return;
-            }
+           String title = InputUtil.readNonEmptyString(scanner,"Enter Title: ");
+           String author = InputUtil.readNonEmptyString(scanner,"Enter Author: ");
+           String category = InputUtil.readNonEmptyString(scanner,"Enter Category: ");
 
-            System.out.print("Enter Author: ");
-            String author = scanner.nextLine();
-            if (author.trim().isEmpty()) {
-                System.out.println("Author should not be empty.");
-                return;
-            }
 
-            System.out.print("Enter Category: ");
-            String category = scanner.nextLine();
-            if (category.trim().isEmpty()) {
-                System.out.println("Category should not be empty.");
-                return;
-            }
+            double price = InputUtil.readDouble(scanner,"Enter Book Price");
 
-            System.out.print("Enter Price: ");
-            double price;
-
-            try {
-               price = scanner.nextDouble();
-               scanner.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid Book Price. Please enter a number.");
-                scanner.nextLine();
-               return;
-        }
             if (price <= 0) {
                 System.out.println("Price should be greater than 0.");
                 return;
             }
 
-            System.out.print("Enter Quantity: ");
-            int quantity;
-
-            try {
-               quantity = scanner.nextInt();
-               scanner.nextLine();
-            } catch (InputMismatchException e) {
-               System.out.println("Invalid Book Quantity. Please enter a number.");
-               scanner.nextLine();
-               return;
-          }
+            int quantity = InputUtil.readInt(scanner,"Enter Quantity: ");
 
             if (quantity <= 0) {
                 System.out.println("Quantity should be greater than 0.");
                 return;
             }
 
-           title = title.trim();
-           author = author.trim();
-           category = category.trim();
 
             Book book = new Book(bookId, title, author, category, price, quantity);
             books.add(book);
@@ -148,16 +101,7 @@ public class LibraryServices {
             return;
         }
 
-        System.out.println("\nEnter Book Id to search :");
-        int searchId ;
-        try {
-            searchId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Book ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int searchId = InputUtil.readInt(scanner,"Enter Book Id To Search: ");
 
         boolean found = false;
         for(Book book : books){
@@ -178,8 +122,7 @@ public class LibraryServices {
     public void searchBook(Scanner scanner){
         System.out.println("\n===== Search Book By Title =====");
 
-        System.out.print("Enter book title, author, or category: ");
-        String word = scanner.nextLine().trim().toLowerCase();
+        String word = InputUtil.readNonEmptyString(scanner, "Enter book title, author, or category:  ").toLowerCase();
         if (word.isEmpty()) {
             System.out.println("Search keyword cannot be empty.");
             return;
@@ -188,9 +131,9 @@ public class LibraryServices {
         boolean   foundBook = false;
 
         for (Book book : books){
-            if(book.getTitle().toLowerCase().contains(word)
-                    || book.getAuthor().toLowerCase().contains(word)
-                    || book.getCategory().toLowerCase().contains(word)) {
+            if(book.getTitle().toLowerCase(Locale.ROOT).contains(word)
+                    || book.getAuthor().toLowerCase(Locale.ROOT).contains(word)
+                    || book.getCategory().toLowerCase(Locale.ROOT).contains(word)) {
 
                 System.out.println("\nBook Found!");
                 System.out.println(book);
@@ -210,17 +153,7 @@ public class LibraryServices {
 
         System.out.println("\n========== Update Book ==========");
 
-        System.out.print("Enter Book ID: ");
-
-        int bookId ;
-        try {
-            bookId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Book ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int bookId = InputUtil.readInt(scanner,"Enter Book Id");
 
         boolean found = false;
 
@@ -230,58 +163,21 @@ public class LibraryServices {
 
                 found = true;
 
-                System.out.print("Enter New Title: ");
-                String title = scanner.nextLine().trim();
+                String title = InputUtil.readNonEmptyString(scanner, "Enter New Title: ");
 
-                if (title.isEmpty()) {
-                    System.out.println("Title cannot be empty.");
-                    return;
-                }
+                String author = InputUtil.readNonEmptyString(scanner,"Enter New Author: ");
 
-                System.out.print("Enter New Author: ");
-                String author = scanner.nextLine().trim();
+                String category = InputUtil.readNonEmptyString(scanner,"Enter New Category: ");
 
-                if (author.isEmpty()) {
-                    System.out.println("Author cannot be empty.");
-                    return;
-                }
+                double price = InputUtil.readDouble(scanner,"Enter New Price:");
 
-                System.out.print("Enter New Category: ");
-                String category = scanner.nextLine().trim();
-
-                if (category.isEmpty()) {
-                    System.out.println("Category cannot be empty.");
-                    return;
-                }
-
-                System.out.print("Enter New Price: ");
-                double price ;
-                try {
-                    price = scanner.nextDouble();
-                    scanner.nextLine();
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid Book Price. Please enter a number.");
-                    scanner.nextLine();
-                    return;
-                }
 
                 if (price <= 0) {
                     System.out.println("Price must be greater than 0.");
                     return;
                 }
 
-                System.out.print("Enter New Quantity: ");
-                int quantity ;
-
-                try {
-                    quantity = scanner.nextInt();
-                    scanner.nextLine();
-                } catch (InputMismatchException e) {
-                    System.out.println("Invalid Book Quantity. Please enter a number.");
-                    scanner.nextLine();
-                    return;
-                }
-
+                int quantity = InputUtil.readInt(scanner,"Enter New Quantity: ");
 
                 if (quantity < 0) {
                     System.out.println("Quantity cannot be negative.");
@@ -316,16 +212,7 @@ public class LibraryServices {
             return;
         }
 
-        System.out.println("\nEnter Book Id to Delete :");
-        int deletedId ;
-        try {
-            deletedId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Book ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int deletedId = InputUtil.readInt(scanner,"Enter Book Id to Delete :");
 
         Book bookToDelete = null;
 
@@ -354,16 +241,11 @@ public class LibraryServices {
             return;
         }
 
-        if(bookToDelete != null){
+        books.remove(bookToDelete);
 
-            books.remove(bookToDelete);
+        saveBooks();
 
-           saveBooks();
-
-            System.out.println("\nBook Deleted Successfully");
-        }else{
-            System.out.println("Book Not Found!");
-        }
+        System.out.println("\nBook Deleted Successfully");
       }
 
 
@@ -418,14 +300,10 @@ public class LibraryServices {
     public void registerMember(Scanner scanner){
         System.out.println("\n===== Register Member =====");
 
-        System.out.print("Enter Member ID: ");
-        int memberId ;
-        try {
-            memberId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Member ID. Please enter a number.");
-            scanner.nextLine();
+        int memberId = InputUtil.readInt(scanner,"Enter Member ID: ");
+
+        if(memberId <= 0){
+            System.out.println("Member ID should be greater than 0.");
             return;
         }
 
@@ -443,39 +321,13 @@ public class LibraryServices {
             return;
         }
 
+        String name = InputUtil.readNonEmptyString(scanner, "Enter Name: ");
 
-        if(memberId <= 0){
-            System.out.println("Member ID should be greater than 0.");
-            return;
-        }
+        String phone = InputUtil.readNonEmptyString(scanner, "Enter Phone Number: ");
 
-        System.out.print("Enter Name: ");
-        String name = scanner.nextLine().trim();
-        if(name.isEmpty()){
-            System.out.println("Name cannot be empty.");
-            return;
-        }
+        String email = InputUtil.readNonEmptyString(scanner, "Enter Email: ");
 
-        System.out.print("Enter Phone: ");
-        String phone = scanner.nextLine().trim();
-        if(phone.isEmpty()){
-            System.out.println("Phone cannot be empty.");
-            return;
-        }
-
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine().trim();
-        if(email.isEmpty()){
-            System.out.println("Email cannot be empty.");
-            return;
-        }
-
-        System.out.print("Enter Address: ");
-        String address = scanner.nextLine().trim();
-        if(address.isEmpty()){
-            System.out.println("Address cannot be empty.");
-            return;
-        }
+        String address = InputUtil.readNonEmptyString(scanner,"Enter Address: ");
 
         Member member = new Member(memberId,name,phone,email,address);
         members.add(member);
@@ -502,16 +354,7 @@ public class LibraryServices {
     public void searchMemberById(Scanner scanner){
         System.out.println("\n===== Search Member =====");
 
-        System.out.print("Enter Member ID: ");
-        int memberId ;
-        try {
-            memberId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Member ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int memberId = InputUtil.readInt(scanner, "Enter Member ID: ");
 
         for (Member member : members) {
 
@@ -528,8 +371,8 @@ public class LibraryServices {
 
     public void searchMemberByName(Scanner scanner){
         System.out.println("\n===== Search Member By Name =====");
-        System.out.print("Enter Member Name: ");
-        String name = scanner.nextLine().trim().toLowerCase();
+
+        String name = InputUtil.readNonEmptyString(scanner, "Enter Member Name: ").toLowerCase();
 
         if (name.isEmpty()) {
             System.out.println("Member name cannot be empty.");
@@ -559,50 +402,21 @@ public class LibraryServices {
     }
 
     public void updateMember(Scanner scanner){
-          System.out.println("\n===== Update Member =====");
+        System.out.println("\n===== Update Member =====");
 
-        System.out.print("Enter Member ID: ");
-        int memberId ;
-        try {
-            memberId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Member ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int memberId = InputUtil.readInt(scanner,"Enter Member ID: ");
 
         for (Member member : members) {
 
             if (member.getMemberId() == memberId) {
 
-                System.out.print("Enter New Name: ");
-                String name = scanner.nextLine().trim();
-                if(name.isEmpty()){
-                    System.out.println("Name cannot be empty.");
-                    return;
-                }
+                String name = InputUtil.readNonEmptyString(scanner, "Enter New Name: ");
 
-                System.out.print("Enter New Phone: ");
-                String phone = scanner.nextLine().trim();
-                if(phone.isEmpty()){
-                    System.out.println("phone Number cannot be empty.");
-                    return;
-                }
+                String phone = InputUtil.readNonEmptyString(scanner, "Enter New Phone Number: ");
 
-                System.out.print("Enter New Email: ");
-                String email = scanner.nextLine().trim();
-                if(email.isEmpty()){
-                    System.out.println("Email cannot be empty.");
-                    return;
-                }
+                String email = InputUtil.readNonEmptyString(scanner, "Enter New Email: ");
 
-                System.out.print("Enter New Address: ");
-                String address = scanner.nextLine().trim();
-                if(address.isEmpty()){
-                    System.out.println("Address cannot be empty.");
-                    return;
-                }
+                String address = InputUtil.readNonEmptyString(scanner,"Enter New Address: ");
 
                 member.setName(name);
                 member.setPhone(phone);
@@ -628,16 +442,7 @@ public class LibraryServices {
 
         System.out.println("\n===== Delete Member =====");
 
-        System.out.print("Enter Member ID: ");
-        int memberId ;
-        try {
-            memberId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Member ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int memberId = InputUtil.readInt(scanner,"Enter Member ID: ");
 
         Member memberToDelete = null;
 
@@ -724,21 +529,19 @@ public class LibraryServices {
         }
         FileUtil.writeLines("members.txt", lines);
     }
+
+
+
     //issueBook
+
+
+
 
     public void issueBook(Scanner scanner) {
         System.out.println("\n===== Issue Book =====");
 
-        System.out.print("Enter Member ID: ");
-        int memberId ;
-        try {
-            memberId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Member ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+
+        int memberId = InputUtil.readInt(scanner, "Enter Member ID: ");
 
         Member foundMember = null;
 
@@ -757,16 +560,7 @@ public class LibraryServices {
             return;
         }
 
-        System.out.print("Enter Book ID: ");
-        int bookId ;
-        try {
-            bookId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Book ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+        int bookId = InputUtil.readInt(scanner, "Enter Book ID: ");
 
         Book foundBook = null;
 
@@ -865,16 +659,8 @@ public class LibraryServices {
 
     public void returnBook(Scanner scanner){
         System.out.println("\n===== Return Book ======");
-        System.out.println("Enter Issue Id: ");
-        int issueId ;
-        try {
-            issueId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Issue ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+
+        int issueId = InputUtil.readInt(scanner, "Enter Issue ID: ");
 
         System.out.println("Searching Issue Id : " + issueId);
 
@@ -907,18 +693,15 @@ public class LibraryServices {
             lateDays = ChronoUnit.DAYS.between(foundIssue.getDueDate(), returnDate);
         }
 
-        Book foundBook = null;
-        for(Book book : books){
-            if(book.getBookId() == foundIssue.getBookId()){
-                foundBook = book;
-                break;
-            }
-        }
+        Book foundBook = findBookByID(
+                foundIssue.getBookId()
+        );
 
-        if(foundBook == null){
+        if (foundBook == null) {
             System.out.println("Book Record Not Found.");
             return;
         }
+
 
         foundBook.setQuantity(foundBook.getQuantity() + 1);
         foundIssue.setReturnDate(returnDate);
@@ -1018,24 +801,16 @@ public class LibraryServices {
             return 0;
         }
         long lateDays = ChronoUnit.DAYS.between(dueDate,returnDate);
-        double finePerDays = 10 ;
-        return lateDays * finePerDays;
+
+        return lateDays * FINE_PER_DAY;
     }
 
     public void searchIssuedBookById(Scanner scanner) {
 
         System.out.println("\n===== Search Issued Book =====");
 
-        System.out.print("Enter Issue ID: ");
-        int issueId ;
-        try {
-            issueId = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Issue ID. Please enter a number.");
-            scanner.nextLine();
-            return;
-        }
+
+        int issueId = InputUtil.readInt(scanner,"Enter Issue ID: ");
 
         IssueBook foundIssue = null;
 
